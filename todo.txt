@@ -1,0 +1,21 @@
+ I thought how cool would it be if I could cross-breed plants and to try to improve the genetic properties and discover new ones.
+First thing is that every plant will have their genetic properties, and they come in diffent tiers, Tier 1 are the default plants in the game, and every cross pollination the tier has a chance to increase, which meanse more rare and powerful properties.
+So I want to add a new workbench: pottery bench that contains all your unique seeds you harvested and created newly potted plants(using the anyplants mod). Potted plants have the ability to cross-pollinate with other potted plants, either automatically if you put them next to eachother, or manually by taking pollen from one plant and carry it to another plant.
+After being pollinated a random combination of genetic info will be inside the seeds of this plant + a random chance the tier goes up (up to 4 tiers). The plant you grow from this seed will have those new genetic properties.
+Examples of genetic properties I was thinking of:
+Tier 1: grow days, harvest yield, fertility sensitivity, beauty
+Tier 2 adds: blight immunity, toxic fallout immunity, low/high temperature resistance, light sensitity, extreme fertility sensitivity
+Tier 3 adds: harvest speed, additional seed drops, extreme low/high temperature resistance
+Tier 4 adds: not destroyed on harvest, randomly also drops neu
+Btw in the calculation of the potted plant's and seeds market value the genetic properties will be taken into account, so you can actually also sell Tier 4 plants for more than regular plants and seeds
+
+Tier 4 correction: chemfuel gen: additional chemfuel drop, but makes the plant explosive. Bramble gen: slows down enemies, foam spray gen, fire resistance gen,
+Tier 3 adds: extreme light sensitivity (grows in dark), extreme fertility sensitivity = grows on anything
+
+Every gen should have an interesting short name. Grow gen, Yield gen, Nutrition gen (three tiers), Beauty gen (three tiers), Blight gen, Toxic gen, Temperature gen (two tiers), Light gen (two tiers), Easy gen, Seed gen, Perennial gen, Chemfuel gen, Bramble gen, inflammable gen, foam gen,
+
+Biotech gens:
+Tier 2 adds: toxi gen: grows in polluted soil
+Tier 3 adds: polux gen: cleans polluted areas
+
+Example: a toxipotato adds "grows in polluted soil" gen if cross-bred with another plant, but only if that other plant is a tier 2, it can accept it, because it is a tier 2 gen.
