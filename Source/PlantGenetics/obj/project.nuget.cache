@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "dgSpecHash": "ABlO9h1YOxtWSrVO+Rv7cIQSnrwSBtBxztp34wbfL6oLScU4gHslGmVDYES/YfmGwBUT1HvDHcqvRoFeAma9uQ==",
+  "success": true,
+  "projectFilePath": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\Mods\\PlantGenetics\\Source\\PlantGenetics\\PlantGenetics.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\tomvd\\.nuget\\packages\\krafs.publicizer\\1.0.3\\krafs.publicizer.1.0.3.nupkg.sha512",
+    "C:\\Users\\tomvd\\.nuget\\packages\\krafs.rimworld.ref\\1.4.3704\\krafs.rimworld.ref.1.4.3704.nupkg.sha512"
+  ],
+  "logs": []
+}
