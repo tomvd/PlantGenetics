@@ -50,6 +50,10 @@
               "target": "Package",
               "version": "[*, )",
               "generatePathProperty": true
+            },
+            "Lib.Harmony": {
+              "target": "Package",
+              "version": "[2.3.0-prerelease.2, )"
             }
           },
           "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.103\\RuntimeIdentifierGraph.json"

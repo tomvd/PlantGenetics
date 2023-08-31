@@ -23,18 +23,16 @@ Example: a toxipotato adds "grows in polluted soil" gen if cross-bred with anoth
 rust idea>
 
 3 tiers, wild gens:
-G growth
-Y Yield (non-decorative only)
+X empty gen
 F fertility sensitivity
+G growth
 H hardiness (temperature resistance)
-B beauty (decorative only)
-can be cross-bred, only uses 4 slots of the DNA
-
-
-2 tiers, artificial gens:
+Y/B yield (non-decorative only) - beauty (decorative only)
+lower chance:
+C chemfuel side-drop, neutroamine side-drop
 I blight immunity, toxic fallout immunity
 L light sensitivity, grows in complete darkness
-C chemfuel side-drop, neutroamine side-drop
 biotech only: P polluted soil immunity, cleans polluted areas 
-overridden by genetic mutation (2x mutation liquid = 1x neutroamine, 2x chemfuel) - 24h process
-adds up to two gen slots to the DNA
+
+Create clone: creates 2-4 clones of the plant (depending on your growing skill) 
+ex: Potato Clone: A clipping of a potato plant

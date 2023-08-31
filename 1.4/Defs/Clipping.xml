@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <JobDef>
+        <defName>ClipPlant</defName>
+        <driverClass>PlantGenetics.Clipping.JobDriver_PlantClip</driverClass>
+        <reportString>cloning TargetA.</reportString>
+        <allowOpportunisticPrefix>true</allowOpportunisticPrefix>
+    </JobDef>
+    <JobDef>
+        <defName>ClipPlantDesignated</defName>
+        <driverClass>PlantGenetics.Clipping.JobDriver_PlantClip_Designated</driverClass>
+        <reportString>cloning TargetA.</reportString>
+        <allowOpportunisticPrefix>true</allowOpportunisticPrefix>
+    </JobDef>
+    <DesignationDef>
+        <defName>ClipPlant</defName>
+        <texturePath>Designations/CutPlant</texturePath>
+        <targetType>Thing</targetType>
+    </DesignationDef>
+    <WorkGiverDef>
+        <defName>PlantsClip</defName>
+        <label>clip plants</label>
+        <giverClass>PlantGenetics.Clipping.WorkGiver_PlantsClip</giverClass>
+        <workType>PlantCutting</workType>
+        <verb>clip</verb>
+        <gerund>clipping</gerund>
+        <requiredCapacities>
+            <li>Manipulation</li>
+        </requiredCapacities>
+    </WorkGiverDef>
+</Defs>

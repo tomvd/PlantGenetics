@@ -1,3 +1,4 @@
+using HarmonyLib;
 using RimWorld;
 using UnityEngine;
 using VendingMachines;
@@ -12,19 +13,22 @@ public static class InternalDefOf
 	{
 		DefOfHelper.EnsureInitializedInCtor(typeof(InternalDefOf));
 	}
-	
+	public static readonly DesignationDef ClipPlant;
+	public static readonly JobDef ClipPlantDesignated;
 
 }
 
 public class PlantGeneticsMod : Mod
 {
+	public static Harmony harmonyInstance;
 	public static Settings Settings;
 	
 	public PlantGeneticsMod(ModContentPack content) : base(content)
 	{
 		Settings = GetSettings<Settings>();
 		//Log.Message("PlantGeneticsMod:start ");
-        
+		harmonyInstance = new Harmony("Adamas.PlantGenetics");
+		harmonyInstance.PatchAll();        
         
     }
 	

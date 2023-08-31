@@ -32,9 +32,15 @@
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
         <PackageReference Include="Krafs.Rimworld.Ref" Version="*" GeneratePathProperty="true" />
+        <PackageReference Include="Lib.Harmony" Version="2.3.0-prerelease.2" />
         <!-- Use Version="*-*" to get the latest beta! -->
     </ItemGroup>
     <ItemGroup>
         <Publicize Include="Assembly-CSharp" />
+    </ItemGroup>
+    <ItemGroup>
+      <Reference Include="BirdSeedsPlease">
+        <HintPath>..\..\..\..\..\..\workshop\content\294100\2586052937\1.4\Assemblies\BirdSeedsPlease.dll</HintPath>
+      </Reference>
     </ItemGroup>
 </Project>
