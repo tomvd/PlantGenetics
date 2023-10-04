@@ -1,15 +1,28 @@
 using System.Collections.Generic;
+using System.Linq;
 using HarmonyLib;
 using PlantGenetics.Comp;
+using PlantGenetics.Utilities;
 using RimWorld;
 using Verse;
 
-namespace PlantGenetics.Patches;
+namespace PlantGenetics.Gens;
 
-public class PlantImmunity
+public static class ImmunityGen
 {
+    public static float getImmunityModifier(this Plant plant)
+    {
+        int c = plant.getDNA().Count(f => (f == 'I'));
+        return c switch
+        {
+            2 => 1f,
+            > 2 => 2f,
+            _ => 0f
+        };
+    }
+    
     /// <summary>
-    /// Blight immunity
+    /// Blight immunity (1 I-gen)
     /// </summary>
     [HarmonyPatch(typeof(Plant), nameof(Plant.BlightableNow), MethodType.Getter)]
     public class BlightableNow
@@ -17,7 +30,7 @@ public class PlantImmunity
         [HarmonyPostfix]
         public static void Postfix(ref bool __result, Plant __instance)
         {
-            if (__instance.GetComp<CompPlantGenetics>().getImmunityModifier() > 0f)
+            if (__instance.getImmunityModifier() > 0f)
             {
                 __result = false;
             }
@@ -25,7 +38,7 @@ public class PlantImmunity
     }
     
     /// <summary>
-    /// Toxic fallout immunity 
+    /// Toxic fallout immunity  (2 I-gens)
     /// </summary>
     [HarmonyPatch(typeof(GameCondition_ToxicFallout), nameof(GameCondition_ToxicFallout.DoCellSteadyEffects))]
     public class DoCellSteadyEffects
@@ -41,7 +54,7 @@ public class PlantImmunity
             for (int i = 0; i < thingList.Count; i++)
             {
                 Thing thing = thingList[i];
-                if (thing is Plant && ((ThingWithComps)thing).GetComp<CompPlantGenetics>().getImmunityModifier() > 1f)
+                if (thing is Plant plant && plant.getImmunityModifier() > 1f)
                 {
                     return false; // do not affect this cell with toxic fallout
                 }

@@ -8,14 +8,9 @@
 		<li>1.4</li>
 	</supportedVersions>
 	<description>
-		Adds genetic properties to plants. Add cross-breeding of plants. Needs the seeds please lite mod.
+		Adds genetic properties to plants. Adds cross-breeding and cloning of plants.
 	</description>
 	<modDependencies>
-		<li>
-			<packageId>Owlchemist.SeedsPleaseLite</packageId>
-			<displayName>SeedsPlease: Lite</displayName>
-			<steamWorkshopUrl>steam://url/CommunityFilePage/2586052937</steamWorkshopUrl>
-		</li>
 		<li>
 			<packageId>brrainz.harmony</packageId>
 			<displayName>Harmony</displayName>
@@ -23,7 +18,4 @@
 			<downloadUrl>https://github.com/pardeike/HarmonyRimWorld/releases/latest</downloadUrl>
 		</li>	
 	</modDependencies>
-	<loadAfter>
-		<li>Owlchemist.SeedsPleaseLite</li>
-	</loadAfter>
 </ModMetaData>

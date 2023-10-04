@@ -36,3 +36,11 @@ biotech only: P polluted soil immunity, cleans polluted areas
 
 Create clone: creates 2-4 clones of the plant (depending on your growing skill) 
 ex: Potato Clone: A clipping of a potato plant
+
+
+plant genetics second thought design:
+ - remove the seeds please requirement
+ - creating clones (drop the clippings word) should be similar to the extract plant, but it just creates clones
+ - planting the clippings is probably no other job than planting minified plants
+ - check out Extract Any Plant from Romyashi as well
+ - need to create a very small gizmo graphic to create clones (see Designator_ExtractTree)

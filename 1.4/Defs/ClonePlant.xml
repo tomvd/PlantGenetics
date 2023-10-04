@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <JobDef>
+        <defName>ClonePlantJob</defName>
+        <driverClass>PlantGenetics.JobDriver_ClonePlantJob</driverClass>
+        <reportString>cloning TargetA.</reportString>
+        <allowOpportunisticPrefix>true</allowOpportunisticPrefix>
+    </JobDef>
+    <DesignationDef>
+        <defName>ClonePlant</defName>
+        <texturePath>Designations/CutPlant</texturePath>
+        <targetType>Thing</targetType>
+    </DesignationDef>
+    <WorkGiverDef>
+        <defName>ClonePlant</defName>
+        <label>clone plants</label>
+        <giverClass>PlantGenetics.WorkGiver_ClonePlant</giverClass>
+        <workType>PlantCutting</workType>
+        <verb>clone</verb>
+        <gerund>cloning</gerund>
+        <requiredCapacities>
+            <li>Manipulation</li>
+        </requiredCapacities>
+        <canBeDoneByMechs>false</canBeDoneByMechs>
+    </WorkGiverDef>
+</Defs>

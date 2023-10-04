@@ -13,8 +13,9 @@ public static class InternalDefOf
 	{
 		DefOfHelper.EnsureInitializedInCtor(typeof(InternalDefOf));
 	}
-	public static readonly DesignationDef ClipPlant;
-	public static readonly JobDef ClipPlantDesignated;
+	public static readonly DesignationDef ClonePlant;
+	public static readonly JobDef ClonePlantJob;
+	
 
 }
 

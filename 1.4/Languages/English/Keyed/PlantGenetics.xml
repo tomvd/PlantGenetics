@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<LanguageData>
+
+    <DesignatorClonePlant>Clone plant</DesignatorClonePlant>
+    <DesignatorClonePlantDesc>Clone this plant while keeping its DNA so it can be replanted somewhere else.</DesignatorClonePlantDesc>
+    <PlantWillDieIn>Plant will die in {time} unless replanted.</PlantWillDieIn>
+    
+</LanguageData>
