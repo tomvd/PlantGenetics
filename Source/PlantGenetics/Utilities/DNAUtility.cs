@@ -39,11 +39,16 @@ public static class DNAUtility
 
         // now add random mutation (TODO lower this chance!!!)
         char[] chars = DNA.ToCharArray();
-        for (int i = 0; i < 6; i++)
+        for (int i = 0; i < 4; i++)
         {
             if (Rand.Chance(0.1f))
                 chars[i] = Genes.ToCharArray().RandomElement();
         }
+        for (int i = 4; i < 6; i++)
+        {
+            if (Rand.Chance(0.1f))
+                chars[i] = Genes.ToCharArray().RandomElement();
+        }        
         DNA = new string(chars);
         return DNA;
     }

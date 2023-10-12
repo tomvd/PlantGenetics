@@ -17,8 +17,8 @@ public static class LightNeedGen
         int c = plant.getDNA().Count(f => (f == 'L'));
         return c switch
         {
-            2 => 0.5f,
-            > 2 => 0f,
+            1 => 0.5f,
+            > 1 => 0f,
             _ => 1.0f
         };
     }

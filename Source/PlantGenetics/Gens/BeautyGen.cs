@@ -12,12 +12,23 @@ public static class BeautyGen
     public static float getBeautyModifier(this Plant plant)
     {
         int c = plant.getDNA().Count(f => (f == 'B'));
+        if (plant.def.plant.purpose == PlantPurpose.Beauty)
+        {
+         // beauty plants always start with 1 B gen
+            return c switch
+            {
+                0 => 0.75f,
+                1 => 1.0f,
+                2 => 2f,
+                > 2 => 3f,
+                _ => 1.0f
+            };
+        }
         return c switch
         {
-            0 => 0.8f,
-            1 => 1.0f,
-            2 => 1.2f,
-            > 2 => 2f,
+            0 => 1.0f,
+            1 => 2f,
+            > 1 => 3f,
             _ => 1.0f
         };
     }  

@@ -45,22 +45,21 @@ namespace PlantGenetics.Comp
 
         public override IEnumerable<Gizmo> CompGetGizmosExtra()
         {
-            if (parent is Plant { LifeStage: PlantLifeStage.Mature, def.blueprintDef: not null })
+            /*if (parent is Plant plant && plant.def.Minifiable
+                                      && plant.getDNA().Length > 0
+                                      && plant.Map.designationManager.DesignationOn(plant, InternalDefOf.ClonePlant) == null 
+                                      && plant.growthInt >= 0.5f)
             {
-                Designation designation = parent.Map.designationManager.DesignationOn(parent);
-                if (designation == null || designation.def != InternalDefOf.ClonePlant)
+                Command_Action command_Action = new Command_Action();
+                command_Action.defaultLabel = "Create clone";
+                command_Action.defaultDesc = "Create clone";
+                //command_Action.icon = CutAllBlightTex;
+                command_Action.action = delegate
                 {
-                    Command_Action command_Action = new Command_Action();
-                    command_Action.defaultLabel = "Create clone";
-                    command_Action.defaultDesc = "Create clone";
-                    //command_Action.icon = CutAllBlightTex;
-                    command_Action.action = delegate
-                    {
-                        parent.Map.designationManager.AddDesignation(new Designation(parent, InternalDefOf.ClonePlant));
-                    };
-                    yield return command_Action;
-                }
-            }
+                    parent.Map.designationManager.AddDesignation(new Designation(parent, InternalDefOf.ClonePlant));
+                };
+                yield return command_Action;
+            }*/
             if (!DebugSettings.ShowDevGizmos)
             {
                 yield break;

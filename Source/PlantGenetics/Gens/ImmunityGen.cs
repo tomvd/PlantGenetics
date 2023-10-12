@@ -14,9 +14,9 @@ public static class ImmunityGen
     {
         int c = plant.getDNA().Count(f => (f == 'I'));
         return c switch
-        {
-            2 => 1f,
-            > 2 => 2f,
+        { 
+            1 => 1f,
+            > 1 => 2f,
             _ => 0f
         };
     }
