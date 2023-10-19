@@ -13,7 +13,7 @@ public class Designator_ClonePlant : Designator
     {
         defaultLabel = "DesignatorClonePlant".Translate();
         defaultDesc = "DesignatorClonePlantDesc".Translate();
-        icon = ContentFinder<Texture2D>.Get("UI/Designators/ExtractTree");
+        icon = ContentFinder<Texture2D>.Get("clonePlant");
         useMouseIcon = true;
         soundDragSustain = SoundDefOf.Designate_DragStandard;
         soundDragChanged = SoundDefOf.Designate_DragStandard_Changed;
@@ -43,7 +43,7 @@ public class Designator_ClonePlant : Designator
         if (t is Plant plant && plant.def.Minifiable
                              && plant.getDNA().Length > 0
                              && base.Map.designationManager.DesignationOn(plant, InternalDefOf.ClonePlant) == null 
-                             && plant.growthInt is >= 0.5f and < 1.0f)
+                             && plant.growthInt is >= 0.9f)// and < 1.0f)
         {
             return true;
         }

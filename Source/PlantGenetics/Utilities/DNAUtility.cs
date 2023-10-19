@@ -37,16 +37,16 @@ public static class DNAUtility
                 break;
         }
 
-        // now add random mutation (TODO lower this chance!!!)
+        // now add random mutation
         char[] chars = DNA.ToCharArray();
         for (int i = 0; i < 4; i++)
         {
-            if (Rand.Chance(0.1f))
+            if (Rand.Chance(0.05f))
                 chars[i] = Genes.ToCharArray().RandomElement();
         }
         for (int i = 4; i < 6; i++)
         {
-            if (Rand.Chance(0.1f))
+            if (Rand.Chance(0.025f))
                 chars[i] = Genes.ToCharArray().RandomElement();
         }        
         DNA = new string(chars);
@@ -58,27 +58,36 @@ public static class DNAUtility
         // gather genetics around the plant
         List<String> genetics = new List<string>();
         char[] sourceDNA = sourcePlant.getDNA().ToCharArray();
-        // TODO check if we need a larger radius for trees (they can not be planted adjacent to each other)
         // TODO can be outside map bounds??
-        IEnumerable<Thing> things = GenRadial.RadialDistinctThingsAround(sourcePlant.Position, sourcePlant.Map, 4f, false);
+        float pollinationRadius = 2f;
+        if (sourcePlant.def.plant.IsTree)
+        {
+            pollinationRadius *= 2f;
+        }
+        if (sourcePlant.Map == null) return;
+        IEnumerable<Thing> things = GenRadial.RadialDistinctThingsAround(sourcePlant.Position, sourcePlant.Map, pollinationRadius, false);
         foreach (var thing in things)
         {
-            if (thing is Plant plant)
+            if (thing != sourcePlant && thing is Plant plant && plant.def == sourcePlant.def && plant.LifeStage == PlantLifeStage.Mature)
             {
                 genetics.Add(plant.GetComp<CompPlantGenetics>().getDNA());
+                //Log.Message("added genetics: " + plant.GetComp<CompPlantGenetics>().getDNA());
             }
         }
-        // there is a 1% chance of adding another gen slot !
-        if (Rand.Chance(0.01f))
+        // go over the slots - every surrounding plant has 50% chance of transferring a gen in a slot that still contains defaultDNA
+        String DefaultDNA = "FGHYXX";
+        // depending on the plants purpose some genes are not present in wild plants
+        switch (sourcePlant.def.plant.purpose)
         {
-            sourcePlant.GetComp<CompPlantGenetics>().SetDNA(sourcePlant.getDNA()+"X");
-        }
-        // go over the slots - every surrounding plant has 10% chance of transferring its gen into the source slot
+            case PlantPurpose.Beauty:
+                DefaultDNA = "FGHBXX";
+                break;
+        }        
         for (int i = 0; i < sourceDNA.Length; i++)
         {
             foreach (var gen in genetics)
             {
-                if (gen.Length > i && Rand.Chance(0.10f))
+                if (Rand.Chance(0.50f) && sourceDNA[i] == DefaultDNA.ToCharArray()[i])
                 {
                     sourceDNA[i] = gen[i];
                 }
