@@ -11,6 +11,7 @@ public static class PollutionGen
 {
     public static float getPollutionResistance(this Plant plant)
     {
+	    if (plant.getDNA() == null) return 0;
         int c = plant.getDNA().Count(f => (f == 'P'));
         if (c == 1) return 1f; // polluted soil immunity  
         if (c > 1) return 2f; // cleans polluted areas

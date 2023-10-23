@@ -17,6 +17,10 @@ namespace PlantGenetics.Comp
         {
             base.PostExposeData();
             Scribe_Values.Look(ref DNA, "DNA");
+            if (DNA == null)
+            {
+                DNA = DNAUtility.AddWildDNA(parent);
+            }
         }
 
         public override void PostPostMake()

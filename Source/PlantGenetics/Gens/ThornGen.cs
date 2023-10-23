@@ -29,7 +29,7 @@ public static class ThornGen
             for (int i = 0; i < list.Count; i++)
             {
                 Thing thing = list[i];
-                if (thing is Plant plant)
+                if (thing is Plant plant && plant.getDNA() != null)
                 {
                     __result += Mathf.RoundToInt(plant.getThornGen() * 14);
                 }

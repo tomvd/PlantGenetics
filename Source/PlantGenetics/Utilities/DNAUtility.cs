@@ -9,8 +9,9 @@ namespace PlantGenetics.Utilities;
 
 public static class DNAUtility
 {
-    public static string getDNA(this Plant plant)
+    public static String getDNA(this Plant plant)
     {
+        if (plant.TryGetComp<CompPlantGenetics>() == null) return "";
         return plant.GetComp<CompPlantGenetics>().getDNA();
     }
     

@@ -24,7 +24,7 @@ public static class InjectDNA
                 CompProperties_PlantGenetics prop =
                     (CompProperties_PlantGenetics)Activator.CreateInstance(typeof(CompProperties_PlantGenetics));
                 def.comps.Add(prop);
-                Log.Message(def.defName + ": added genetics");
+                //Log.Message(def.defName + ": added genetics");
             }
         }
     }
