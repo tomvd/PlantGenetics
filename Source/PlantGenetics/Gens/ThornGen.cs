@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using HarmonyLib;
-using PlantGenetics.Utilities;
 using RimWorld;
 using UnityEngine;
 using Verse;
@@ -10,7 +9,7 @@ using Verse.AI;
 namespace PlantGenetics.Gens;
 
 public static class ThornGen
-{
+{/*
     public static float getThornGen(this Plant plant)
     {
         int c = plant.getDNA().Count(f => (f == 'T'));
@@ -37,5 +36,5 @@ public static class ThornGen
             }
         }
     }
-
+*/
 }

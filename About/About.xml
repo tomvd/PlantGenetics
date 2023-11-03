@@ -3,12 +3,12 @@
 	<name>Plant genetics</name>
 	<author>Adamas</author>
 	<packageId>Adamas.PlantGenetics</packageId>
-	<url>todo</url>
+	<url>https://steamcommunity.com/sharedfiles/filedetails/?id=3049746470</url>
 	<supportedVersions>
 		<li>1.4</li>
 	</supportedVersions>
 	<description>
-		Adds genetic properties to plants. Adds cross-breeding and cloning of plants.
+		Plant breeding: the science of maximizing plants' positive genetic traits into new plant varieties.
 	</description>
 	<modDependencies>
 		<li>

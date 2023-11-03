@@ -1,12 +1,11 @@
 using System.Linq;
 using HarmonyLib;
-using PlantGenetics.Utilities;
 using RimWorld;
 
 namespace PlantGenetics.Gens;
 
 public static class FertilityGen
-{
+{/*
     public static float getFertilitySensitivityModifier(this Plant plant)
     {
         int c = plant.getDNA().Count(f => (f == 'F'));
@@ -36,5 +35,5 @@ public static class FertilityGen
             __result = __instance.Map.fertilityGrid.FertilityAt(__instance.Position) *
                 (__instance.def.plant.fertilitySensitivity * mod) + (1f - (__instance.def.plant.fertilitySensitivity * mod));
         }
-    }
+    }*/
 }

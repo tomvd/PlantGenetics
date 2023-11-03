@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using PlantGenetics.Utilities;
 using RimWorld;
 using Verse;
 using Verse.AI;
@@ -78,12 +77,14 @@ public class JobDriver_ClonePlantJob : JobDriver
 
 	private void SpawnMinifiedClones(Plant plant, Pawn pawn)
 	{
+		/*
 		for (int i = 0; i < Rand.Range(3,6); i++)
 		{
 			Plant clone = ThingMaker.MakeThing(plant.def) as Plant;
 			clone.setDNA(plant.getDNA());
 			clone.growthInt = 0.01f;
 			GenPlace.TryPlaceThing(clone.MakeMinified(), pawn.Position, base.Map, ThingPlaceMode.Near);
-		}
+		}*/
+		Map.GetComponent<PottingService>().AddClone(plant);
 	}
 }

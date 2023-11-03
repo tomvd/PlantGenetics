@@ -1,12 +1,11 @@
 using System.Linq;
 using HarmonyLib;
-using PlantGenetics.Utilities;
 using RimWorld;
 
 namespace PlantGenetics.Gens;
 
 public static class GrowthGen
-{
+{/*
     public static float getGrowthRateModifier(this Plant plant)
     {
         int c = plant.getDNA().Count(f => (f == 'G'));
@@ -31,5 +30,5 @@ public static class GrowthGen
         {
             __result *= __instance.getGrowthRateModifier();
         }
-    }
+    }*/
 }

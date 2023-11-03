@@ -15,7 +15,8 @@ public static class InternalDefOf
 	}
 	public static readonly DesignationDef ClonePlant;
 	public static readonly JobDef ClonePlantJob;
-	
+	public static readonly JobDef UsePottingBench;
+	public static readonly ThingDef PottingBench;
 
 }
 

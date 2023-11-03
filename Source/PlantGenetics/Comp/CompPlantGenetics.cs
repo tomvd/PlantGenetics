@@ -1,50 +1,32 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using PlantGenetics.Gens;
-using PlantGenetics.Utilities;
-using RimWorld;
 using Verse;
 
-namespace PlantGenetics.Comp
+namespace PlantGenetics
 {
     public class CompPlantGenetics : ThingComp
     {
-        private String DNA;
-        public String getDNA() => DNA;
+        public TraitDef Trait;
         
         public override void PostExposeData()
         {
             base.PostExposeData();
-            Scribe_Values.Look(ref DNA, "DNA");
-            if (DNA == null)
+            Scribe_Defs.Look(ref Trait, "Trait");
+            if (Trait == null)
             {
-                DNA = DNAUtility.AddWildDNA(parent);
+                Trait = Traits.GetRandomTrait();
             }
         }
 
         public override void PostPostMake()
         {
-            DNA = DNAUtility.AddWildDNA(parent);
-            // it can also come from the clone
+            Trait = Traits.GetRandomTrait();
         }
 
-        public void SetDNA(String DNA)
-        {
-            this.DNA = DNA;
-        }
-        
         public override string CompInspectStringExtra()
         {
-            return "DNA:" + DNA;
-        }
-        public override IEnumerable<StatDrawEntry> SpecialDisplayStats()
-        {
-            if (parent is Plant plant) {
-                yield return new StatDrawEntry(StatCategoryDefOf.Basics, "LightRequirement".Translate(),
-                (plant.def.plant.growMinGlow * plant.getLightSensitivityModifier()).ToStringPercent(),
-                "Stat_Thing_Plant_LightRequirement_Desc".Translate(), 5000);
-            }
+            if (Trait == null) return "";
+            return "Trait: " + Trait.LabelCap;
         }
 
         public override IEnumerable<Gizmo> CompGetGizmosExtra()
@@ -69,11 +51,11 @@ namespace PlantGenetics.Comp
                 yield break;
             }
             Command_Action debug = new Command_Action();
-            debug.defaultLabel = "debug - change DNA";
-            debug.defaultDesc = "debug - change DNA";
+            debug.defaultLabel = "debug - random trait";
+            debug.defaultDesc = "debug - random trait";
             debug.action = delegate
             {
-                SetDNA(DNAUtility.AddWildDNA(parent));
+                Trait = Traits.GetRandomTrait(true);
             };
             yield return debug;
         }

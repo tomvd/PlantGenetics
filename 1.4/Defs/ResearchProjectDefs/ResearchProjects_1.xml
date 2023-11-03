@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+    <ResearchProjectDef>
+        <defName>PlantBreeding</defName>
+        <label>plant breeding</label>
+        <description>Learn the science of maximizing plants' positive genetic traits into new plant varieties.</description>
+        <baseCost>500</baseCost>
+		<tab>PlantGenetics</tab>
+        <techLevel>Neolithic</techLevel>
+		<researchViewX>2.00</researchViewX>
+		<researchViewY>0.15</researchViewY>
+    </ResearchProjectDef>
+
+</Defs>

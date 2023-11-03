@@ -1,4 +1,4 @@
-using PlantGenetics.Utilities;
+using System.Linq;
 using RimWorld;
 using UnityEngine;
 using Verse;
@@ -40,10 +40,12 @@ public class Designator_ClonePlant : Designator
 
     public override AcceptanceReport CanDesignateThing(Thing t)
     {
-        if (t is Plant plant && plant.def.Minifiable
-                             && plant.getDNA().Length > 0
-                             && base.Map.designationManager.DesignationOn(plant, InternalDefOf.ClonePlant) == null 
-                             && plant.growthInt is >= 0.9f)// and < 1.0f)
+        if (t is Plant plant 
+                             && plant.HasTrait()
+                             && Map.listerBuildings.allBuildingsColonist
+                                 .Any(building => building.def == InternalDefOf.PottingBench)
+                             && Map.designationManager.DesignationOn(plant, InternalDefOf.ClonePlant) == null 
+                             && plant.growthInt is >= 0.5f)
         {
             return true;
         }

@@ -1,14 +1,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using HarmonyLib;
-using PlantGenetics.Utilities;
 using RimWorld;
 using Verse;
 
 namespace PlantGenetics.Gens;
 
 public static class PollutionGen
-{
+{/*
     public static float getPollutionResistance(this Plant plant)
     {
 	    if (plant.getDNA() == null) return 0;
@@ -19,10 +18,6 @@ public static class PollutionGen
     }
     
     
-    /*
-     * This one is pretty bad, as I had to copy the whole code of that method, with the exception of one line
-     * I marked the one line :)
-     */
     [HarmonyPatch(typeof(CompPlantable), nameof(CompPlantable.CanPlantAt))]
     public class Patch_CanPlantAtOne
     {
@@ -38,7 +33,7 @@ public static class PollutionGen
 			    }
 			    Thing blockingThing;
 			    AcceptanceReport acceptanceReport = __instance.Props.plantDefToSpawn.CanEverPlantAt(cell, map, out blockingThing, canWipePlantsExceptTree: true);
-			    if (!acceptanceReport.Accepted && !acceptanceReport.Reason.Equals("MessageWarningPollutedCell".Translate())) // Adamas: Added extra condition here
+			    if (!acceptanceReport.Accepted && acceptanceReport.Reason != null && !acceptanceReport.Reason.Equals("MessageWarningPollutedCell".Translate())) // Adamas: Added extra condition here
 			    {
 				    __result = "CannotPlantThing".Translate(__instance.parent) + ": " + acceptanceReport.Reason.CapitalizeFirst();
 				    return false;
@@ -160,5 +155,5 @@ public static class PollutionGen
 			    
 		    }
 	    }
-    }
+    }*/
 }

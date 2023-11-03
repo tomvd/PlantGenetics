@@ -1,7 +1,5 @@
 using System.Linq;
 using HarmonyLib;
-using PlantGenetics.Comp;
-using PlantGenetics.Utilities;
 using RimWorld;
 using UnityEngine;
 using Verse;
@@ -10,7 +8,7 @@ namespace PlantGenetics.Gens;
 
 public static class HardinessGen
 {
-    
+    /*
     public static float getHardinessModifier(this Plant plant)
     {
         int c = plant.getDNA().Count(f => (f == 'H'));
@@ -63,5 +61,5 @@ public static class HardinessGen
             float mod = __instance.getHardinessModifier();
             __result *= 1f + mod;
         }
-    }
+    }*/
 }

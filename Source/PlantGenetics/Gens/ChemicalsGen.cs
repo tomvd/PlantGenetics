@@ -1,6 +1,5 @@
 using System.Linq;
 using HarmonyLib;
-using PlantGenetics.Utilities;
 using RimWorld;
 using UnityEngine;
 using Verse;
@@ -8,7 +7,7 @@ using Verse;
 namespace PlantGenetics.Gens;
 
 public static class ChemicalsGen
-{
+{/*
     public static int getChemGen(this Plant plant)
     {
         int c = plant.getDNA().Count(f => (f == 'C'));
@@ -39,5 +38,5 @@ public static class ChemicalsGen
                 if (!by.factionInt?.def.isPlayer ?? false) newSeeds.SetForbidden(true);
             }
         }
-    }
+    }*/
 }

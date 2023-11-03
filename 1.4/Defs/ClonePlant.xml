@@ -23,4 +23,9 @@
         </requiredCapacities>
         <canBeDoneByMechs>false</canBeDoneByMechs>
     </WorkGiverDef>
+    <JobDef>
+        <defName>UsePottingBench</defName>
+        <driverClass>PlantGenetics.JobDriver_UsePottingBench</driverClass>
+        <reportString>Using TargetA.</reportString>
+    </JobDef>    
 </Defs>

@@ -1,15 +1,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using HarmonyLib;
-using PlantGenetics.Comp;
-using PlantGenetics.Utilities;
 using RimWorld;
 using Verse;
 
 namespace PlantGenetics.Gens;
 
 public static class ImmunityGen
-{
+{/*
     public static float getImmunityModifier(this Plant plant)
     {
         int c = plant.getDNA().Count(f => (f == 'I'));
@@ -61,5 +59,5 @@ public static class ImmunityGen
             }
             return true; // continue
         }
-    }
+    }*/
 }

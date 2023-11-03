@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Linq;
-using PlantGenetics.Comp;
 using Verse;
 
 namespace PlantGenetics.Injector;
@@ -13,7 +12,7 @@ public static class InjectDNA
     {
         var defs = DefDatabase<ThingDef>.AllDefsListForReading.Where(def => def.plant != null).ToList();
         defs.RemoveDuplicates();
-        Log.Message(defs.Count + " todo ");
+        //Log.Message(defs.Count + " todo ");
         
         foreach (var def in defs)
         {

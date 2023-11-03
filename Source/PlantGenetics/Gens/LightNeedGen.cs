@@ -2,8 +2,6 @@ using System;
 using System.Linq;
 using System.Text;
 using HarmonyLib;
-using PlantGenetics.Comp;
-using PlantGenetics.Utilities;
 using RimWorld;
 using UnityEngine;
 using Verse;
@@ -11,7 +9,7 @@ using Verse;
 namespace PlantGenetics.Gens;
 
 public static class LightNeedGen
-{
+{/*
     public static float getLightSensitivityModifier(this Plant plant)
     {
         int c = plant.getDNA().Count(f => (f == 'L'));
@@ -68,5 +66,5 @@ public static class LightNeedGen
             }
             __result = stringBuilder.ToString().TrimEndNewlines();
         }
-    }
+    }*/
 }

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <PlantGenetics.TraitDef>
+        <defName>Beautiful</defName>
+        <label>beautiful</label>
+        <commonality>0.01</commonality>
+        <level>0</level>
+        <statmultiplier>2.0</statmultiplier>
+        <associatedStats>
+            <li>Beauty</li>
+            <li>BeautyOutdoors</li>
+        </associatedStats>
+    </PlantGenetics.TraitDef>
+    <PlantGenetics.TraitDef>
+        <defName>Vibrant</defName>
+        <label>vibrant</label>
+        <commonality>0</commonality>
+        <level>1</level>
+        <statmultiplier>3.0</statmultiplier>
+        <associatedStats>
+            <li>Beauty</li>
+            <li>BeautyOutdoors</li>
+        </associatedStats>        
+    </PlantGenetics.TraitDef>
+    <PlantGenetics.TraitDef>
+        <defName>Productive</defName>
+        <label>productive</label>
+        <commonality>0.01</commonality>
+        <level>0</level>
+        <statmultiplier>1.5</statmultiplier>
+        <associatedPlantProperty>harvestYield</associatedPlantProperty>
+    </PlantGenetics.TraitDef>    
+    
+</Defs>
+<!--
+
+        Beautiful = "Beautiful",
+        Chemical = "Chemical",
+        Easy = "Easy",
+        Growing = "Growing",
+        Hard = "Hard",
+        Immune = "Immune",
+        Darkness = "Darkness",
+        Pollux = "Pollux",
+        Thorny = "Thorny",
+        Yield = "Yield";
+-->
