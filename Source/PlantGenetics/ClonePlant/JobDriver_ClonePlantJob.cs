@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using RimWorld;
 using Verse;
 using Verse.AI;
@@ -85,6 +86,8 @@ public class JobDriver_ClonePlantJob : JobDriver
 			clone.growthInt = 0.01f;
 			GenPlace.TryPlaceThing(clone.MakeMinified(), pawn.Position, base.Map, ThingPlaceMode.Near);
 		}*/
-		Map.GetComponent<PottingService>().AddClone(plant);
+		Building pottingBench = Map.listerBuildings.allBuildingsColonist
+			.Where(building => building.def == InternalDefOf.PottingBench).FirstOrFallback();
+		Map.GetComponent<PottingService>().AddClone(plant, pottingBench);
 	}
 }

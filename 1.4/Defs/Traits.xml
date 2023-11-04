@@ -4,7 +4,6 @@
         <defName>Beautiful</defName>
         <label>beautiful</label>
         <commonality>0.01</commonality>
-        <level>0</level>
         <statmultiplier>2.0</statmultiplier>
         <associatedStats>
             <li>Beauty</li>
@@ -12,25 +11,33 @@
         </associatedStats>
     </PlantGenetics.TraitDef>
     <PlantGenetics.TraitDef>
-        <defName>Vibrant</defName>
-        <label>vibrant</label>
-        <commonality>0</commonality>
-        <level>1</level>
-        <statmultiplier>3.0</statmultiplier>
-        <associatedStats>
-            <li>Beauty</li>
-            <li>BeautyOutdoors</li>
-        </associatedStats>        
-    </PlantGenetics.TraitDef>
-    <PlantGenetics.TraitDef>
         <defName>Productive</defName>
         <label>productive</label>
         <commonality>0.01</commonality>
-        <level>0</level>
         <statmultiplier>1.5</statmultiplier>
         <associatedPlantProperty>harvestYield</associatedPlantProperty>
+    </PlantGenetics.TraitDef>
+    <PlantGenetics.TraitDef>
+        <defName>Booming</defName>
+        <label>booming</label>
+        <commonality>0.01</commonality>
+        <statmultiplier>0.8</statmultiplier>
+        <associatedPlantProperty>growDays</associatedPlantProperty>
+    </PlantGenetics.TraitDef>
+    <PlantGenetics.TraitDef>
+        <defName>Flexible</defName>
+        <label>flexible</label>
+        <commonality>0.01</commonality>
+        <statmultiplier>0.5</statmultiplier>
+        <associatedPlantProperty>fertilityMin</associatedPlantProperty>
+    </PlantGenetics.TraitDef>
+    <PlantGenetics.TraitDef>
+        <defName>Resilient</defName>
+        <label>resilient</label>
+        <commonality>0.01</commonality>
+        <statmultiplier>0.5</statmultiplier>
+        <associatedPlantProperty>growMinGlow</associatedPlantProperty>
     </PlantGenetics.TraitDef>    
-    
 </Defs>
 <!--
 

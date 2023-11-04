@@ -10,7 +10,7 @@ public static class Traits
 {
     public static TraitDef GetRandomTrait(bool debug = false)
     {
-        if (Rand.Chance(0.1f) || debug)
+        if (Rand.Chance(0.05f) || debug)
             return DefDatabase<TraitDef>.AllDefsListForReading.Where(traitDef => traitDef.commonality > 0.0f).RandomElement(); // TODO take into account commonality
         else
         {

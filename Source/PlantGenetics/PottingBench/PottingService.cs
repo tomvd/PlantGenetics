@@ -15,6 +15,7 @@ namespace PlantGenetics
     {
       
         private List<CloneData> _clones = new List<CloneData>();
+        private Building pottingBench;
 
         public PottingService(Map map) : base(map)
         {
@@ -24,13 +25,15 @@ namespace PlantGenetics
         {
             base.ExposeData();
             Scribe_Collections.Look(ref _clones, "clones", LookMode.Deep);
+            Scribe_References.Look(ref pottingBench, "pottingBench");
             _clones ??= new List<CloneData>();            
         }
 
         public List<CloneData> Clones => _clones;
 
-        public bool AddClone(Plant plant)
+        public bool AddClone(Plant plant, Building bench)
         {
+            pottingBench = bench;
             Messages.Message("Successfully added a clipping to the potting bench.", MessageTypeDefOf.NeutralEvent);
             _clones.Add(new CloneData(plant));
             return true;
@@ -50,7 +53,7 @@ namespace PlantGenetics
                 {
                     if (clone.status.Equals("breeding"))
                     {
-                        BreedHelper.AddBreedFromClone(clone);
+                        BreedHelper.AddBreedFromClone(clone, pottingBench);
                         Clones.Remove(clone);
                     }
                 }
@@ -59,7 +62,7 @@ namespace PlantGenetics
         public void Breed(CloneData clone)
         {
             clone.status = "breeding";
-            clone.finishDays = GenDate.DaysPassedFloat + clone.PlantDef.plant.growDays / 0.5f;
+            clone.finishDays = GenDate.DaysPassedFloat + clone.PlantDef.plant.growDays / 2f;
         }
 
         public void Finish(CloneData clone)

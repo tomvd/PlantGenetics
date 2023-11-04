@@ -1,17 +1,15 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
 using System.Xml;
 using RimWorld;
-using RimWorld.Planet;
 using Verse;
 
 namespace PlantGenetics;
 
 public static class BreedHelper
 {
-    public static bool AddBreedFromClone(CloneData cloneData)
+    public static bool AddBreedFromClone(CloneData cloneData, Building pottingBench)
     {
         var fields = typeof(ThingDef).GetFields(BindingFlags.Public | BindingFlags.Instance);
         ThingDef template = cloneData.PlantDef;
@@ -66,6 +64,16 @@ public static class BreedHelper
             case "harvestYield":
                 clone.plant.harvestYield *= cloneData.Trait.statmultiplier;                          
                 break;
+            case "growDays":
+                clone.plant.growDays *= cloneData.Trait.statmultiplier;                          
+                break;            
+            case "fertilityMin":
+                clone.plant.fertilityMin *= cloneData.Trait.statmultiplier;         
+                clone.plant.fertilitySensitivity *= cloneData.Trait.statmultiplier;
+                break;     
+            case "growMinGlow":
+                clone.plant.growMinGlow *= cloneData.Trait.statmultiplier;
+                break;     
         }
 
 
@@ -75,6 +83,18 @@ public static class BreedHelper
         DefDatabase<ThingDef>.Add(clone);
         clone.ResolveReferences();
         Messages.Message("Succesfully created a new plant species: " + cloneName, MessageTypeDefOf.NeutralEvent);
+        /*
+         *  check for seedsplease mod and spawn seeds of this new species
+         
+        if (ModsConfig.IsActive("owlchemist.seedspleaselite"))
+        {
+            SeedsPleaseUtility.Setup(true); // regenerates seeds for the new plant
+            float stackCount = 3;
+            Thing newSeeds = ThingMaker.MakeThing(clone.blueprintDef, null);
+            newSeeds.stackCount = Mathf.RoundToInt(stackCount);
+            GenPlace.TryPlaceThing(newSeeds, pottingBench.Position, pottingBench.Map, ThingPlaceMode.Near);
+        }*/
+        
         return true;
     }
     
