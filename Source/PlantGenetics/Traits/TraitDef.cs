@@ -10,4 +10,5 @@ public class TraitDef : Def
     public float statmultiplier; // if value exists
     public List<StatDef> associatedStats = new List<StatDef>();
     public string associatedPlantProperty;
+    public bool special;
 }

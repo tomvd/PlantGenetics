@@ -38,4 +38,9 @@
     <ItemGroup>
         <Publicize Include="Assembly-CSharp" />
     </ItemGroup>
+    <ItemGroup>
+      <Reference Include="BirdSeedsPlease">
+        <HintPath>..\..\..\..\..\..\workshop\content\294100\2586052937\1.4\Assemblies\BirdSeedsPlease.dll</HintPath>
+      </Reference>
+    </ItemGroup>
 </Project>

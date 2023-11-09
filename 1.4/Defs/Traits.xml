@@ -37,7 +37,13 @@
         <commonality>0.01</commonality>
         <statmultiplier>0.5</statmultiplier>
         <associatedPlantProperty>growMinGlow</associatedPlantProperty>
-    </PlantGenetics.TraitDef>    
+    </PlantGenetics.TraitDef>
+    <PlantGenetics.TraitDef>
+        <defName>Winter</defName>
+        <label>winter</label>
+        <commonality>0.01</commonality>
+        <special>true</special>
+    </PlantGenetics.TraitDef>
 </Defs>
 <!--
 

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Xml;
+using PlantGenetics.Gens;
 using RimWorld;
 using Verse;
 
@@ -9,11 +10,11 @@ namespace PlantGenetics;
 
 public static class BreedHelper
 {
-    public static bool AddBreedFromClone(CloneData cloneData, Building pottingBench)
+    public static ThingDef AddBreedFromClone(CloneData cloneData)
     {
         var fields = typeof(ThingDef).GetFields(BindingFlags.Public | BindingFlags.Instance);
         ThingDef template = cloneData.PlantDef;
-        string cloneDefName = template.defName + new UniqueId();
+        string cloneDefName = cloneData.Trait.defName +"_"+ template.defName;
         string cloneName = cloneData.newName;
         ThingDef clone = new ThingDef();
                 
@@ -30,7 +31,7 @@ public static class BreedHelper
         clone.defName = cloneDefName;
         clone.label = cloneName;
         clone.shortHash = 0;
-        if (cloneData.Trait.associatedStats.Count > 0)
+        if (cloneData.Trait.associatedStats != null && cloneData.Trait.associatedStats.Count > 0)
         {
             clone.statBases = new List<StatModifier>(); // otherwise it seems to overwrite stats of the template?
             foreach (var templateStatBase in template.statBases)
@@ -59,23 +60,36 @@ public static class BreedHelper
             field.SetValue(clone.plant, field.GetValue(template.plant));
         }
 
-        switch (cloneData.Trait.associatedPlantProperty)
+        if (cloneData.Trait.associatedPlantProperty != null)
         {
-            case "harvestYield":
-                clone.plant.harvestYield *= cloneData.Trait.statmultiplier;                          
-                break;
-            case "growDays":
-                clone.plant.growDays *= cloneData.Trait.statmultiplier;                          
-                break;            
-            case "fertilityMin":
-                clone.plant.fertilityMin *= cloneData.Trait.statmultiplier;         
-                clone.plant.fertilitySensitivity *= cloneData.Trait.statmultiplier;
-                break;     
-            case "growMinGlow":
-                clone.plant.growMinGlow *= cloneData.Trait.statmultiplier;
-                break;     
+            switch (cloneData.Trait.associatedPlantProperty)
+            {
+                case "harvestYield":
+                    clone.plant.harvestYield *= cloneData.Trait.statmultiplier;
+                    break;
+                case "growDays":
+                    clone.plant.growDays *= cloneData.Trait.statmultiplier;
+                    break;
+                case "fertilityMin":
+                    clone.plant.fertilityMin *= cloneData.Trait.statmultiplier;
+                    clone.plant.fertilitySensitivity *= cloneData.Trait.statmultiplier;
+                    break;
+                case "growMinGlow":
+                    clone.plant.growMinGlow *= cloneData.Trait.statmultiplier;
+                    clone.plant.dieIfNoSunlight = false;
+                    clone.plant.neverBlightable = true;
+                    clone.plant.dieFromToxicFallout = false;
+                    break;
+            }
         }
 
+        if (cloneData.Trait.special)
+        {
+            TraitExtension te = new TraitExtension();
+            te.SpecialTrait = cloneData.Trait;
+            clone.modExtensions ??= new List<DefModExtension>();
+            clone.modExtensions.Add(te);
+        }
 
         HashSet<ushort> takenHashes = ShortHashGiver.takenHashesPerDeftype[typeof(ThingDef)];
         typeof(ShortHashGiver).GetMethod("GiveShortHash", BindingFlags.NonPublic|BindingFlags.Static).Invoke(null, new object[] {clone, typeof(ThingDef), takenHashes});
@@ -83,19 +97,7 @@ public static class BreedHelper
         DefDatabase<ThingDef>.Add(clone);
         clone.ResolveReferences();
         Messages.Message("Succesfully created a new plant species: " + cloneName, MessageTypeDefOf.NeutralEvent);
-        /*
-         *  check for seedsplease mod and spawn seeds of this new species
-         
-        if (ModsConfig.IsActive("owlchemist.seedspleaselite"))
-        {
-            SeedsPleaseUtility.Setup(true); // regenerates seeds for the new plant
-            float stackCount = 3;
-            Thing newSeeds = ThingMaker.MakeThing(clone.blueprintDef, null);
-            newSeeds.stackCount = Mathf.RoundToInt(stackCount);
-            GenPlace.TryPlaceThing(newSeeds, pottingBench.Position, pottingBench.Map, ThingPlaceMode.Near);
-        }*/
-        
-        return true;
+        return clone;
     }
     
     private static void CopyComps(ThingDef clone, ThingDef template)

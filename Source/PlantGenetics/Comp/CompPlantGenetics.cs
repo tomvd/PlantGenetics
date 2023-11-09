@@ -1,5 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using PlantGenetics.Gens;
+using RimWorld;
 using Verse;
 
 namespace PlantGenetics
@@ -12,10 +13,6 @@ namespace PlantGenetics
         {
             base.PostExposeData();
             Scribe_Defs.Look(ref Trait, "Trait");
-            if (Trait == null)
-            {
-                Trait = Traits.GetRandomTrait();
-            }
         }
 
         public override void PostPostMake()
@@ -28,6 +25,20 @@ namespace PlantGenetics
             if (Trait == null) return "";
             return "Trait: " + Trait.LabelCap;
         }
+
+
+        public override IEnumerable<StatDrawEntry> SpecialDisplayStats()
+        {
+            if (parent.def.GetModExtension<TraitExtension>() != null &&
+                parent.def.GetModExtension<TraitExtension>().SpecialTrait != null &&
+                parent.def.GetModExtension<TraitExtension>().SpecialTrait
+                    .Equals(InternalDefOf.Winter))
+            {
+                yield return new StatDrawEntry(StatCategoryDefOf.Genetics, "MinGrowthTemperature".Translate(), (-16f).ToStringTemperature(), "Stat_Thing_Plant_MinGrowthTemperature_Desc".Translate(), 4152);
+                yield return new StatDrawEntry(StatCategoryDefOf.Genetics, "MaxGrowthTemperature".Translate(), 41f.ToStringTemperature(), "Stat_Thing_Plant_MaxGrowthTemperature_Desc".Translate(), 4153);
+            }            
+        }
+
 
         public override IEnumerable<Gizmo> CompGetGizmosExtra()
         {

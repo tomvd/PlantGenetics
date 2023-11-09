@@ -1,7 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
+using HarmonyLib;
 using RimWorld;
+using SeedsPleaseLite;
 using UnityEngine;
 using Verse;
 
@@ -53,7 +56,21 @@ namespace PlantGenetics
                 {
                     if (clone.status.Equals("breeding"))
                     {
-                        BreedHelper.AddBreedFromClone(clone, pottingBench);
+                        ThingDef newBreed = BreedHelper.AddBreedFromClone(clone);
+                        /*
+                         *  check for seedsplease mod and spawn seeds of this new species
+                         */
+                        if (ModsConfig.IsActive("owlchemist.seedspleaselite"))
+                        {
+                            newBreed.blueprintDef = null;
+                            MethodInfo original = AccessTools.Method("SeedsPleaseLite.SeedsPleaseUtility:Setup");
+                            original.Invoke(null, new object[]{true});
+                            //SeedsPleaseUtility.Setup(true); // regenerates seeds for the new plant
+                            float stackCount = 3;
+                            Thing newSeeds = ThingMaker.MakeThing(newBreed.blueprintDef, null);
+                            newSeeds.stackCount = Mathf.RoundToInt(stackCount);
+                            GenPlace.TryPlaceThing(newSeeds, pottingBench.Position, pottingBench.Map, ThingPlaceMode.Near);
+                        }                        
                         Clones.Remove(clone);
                     }
                 }
