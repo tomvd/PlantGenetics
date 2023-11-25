@@ -88,6 +88,6 @@ public class JobDriver_ClonePlantJob : JobDriver
 		}*/
 		Building pottingBench = Map.listerBuildings.allBuildingsColonist
 			.Where(building => building.def == InternalDefOf.PottingBench).FirstOrFallback();
-		Map.GetComponent<PottingService>().AddClone(plant, pottingBench);
+		Find.World.GetComponent<PottingService>().AddClone(plant, pottingBench);
 	}
 }

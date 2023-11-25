@@ -1,10 +1,8 @@
-using System.Collections.Generic;
 using System.Linq;
 using PlantGenetics.PottingBench.UI;
 using RimWorld;
 using UnityEngine;
 using Verse;
-using Verse.Sound;
 
 namespace PlantGenetics
 {
@@ -19,13 +17,13 @@ namespace PlantGenetics
         {
             map = actor.Map;
             this.actor = actor;
-            _pottingService = map.GetComponent<PottingService>();
+            _pottingService = Find.World.GetComponent<PottingService>();
             closeOnCancel = true;
             forcePause = true;
             closeOnAccept = true;
         }
 
-        public override Vector2 InitialSize => new Vector2(800, Mathf.Min(740, Verse.UI.screenHeight));
+        public override Vector2 InitialSize => new Vector2(800, Mathf.Min(740, UI.screenHeight));
         public override float Margin => 5f;
 
         public override void DoWindowContents(Rect inRect)
@@ -63,7 +61,7 @@ namespace PlantGenetics
         {
             inRect.width = 150f;
             Widgets.Label(inRect,
-                "Pots in use: "+_pottingService.Clones.Count+"/12");
+                "Pots in use: "+_pottingService.Clones.Where(clone => clone.status is not "done").ToList().Count+"/12");
 
         }
         
@@ -96,7 +94,7 @@ namespace PlantGenetics
             Widgets.Label(titleRect, "action");
             GUI.color = Color.white;
             var highlight = true;
-            foreach (var clone in _pottingService.Clones.ToList())
+            foreach (var clone in _pottingService.Clones.Where(clone => clone.status is not "done").ToList())
             {
                 nameRect.y += 20f;
                 valueRect.y += 20f;

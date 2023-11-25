@@ -1,10 +1,9 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using HarmonyLib;
 using RimWorld;
-using SeedsPleaseLite;
+using RimWorld.Planet;
 using UnityEngine;
 using Verse;
 
@@ -14,13 +13,13 @@ namespace PlantGenetics
      * has an inventory of clippings/clones we have gathered
      * keeps track of breeding / crossbreeding / mutation jobs
      */
-    public class PottingService : MapComponent
+    public class PottingService : WorldComponent
     {
       
         private List<CloneData> _clones = new List<CloneData>();
         private Building pottingBench;
 
-        public PottingService(Map map) : base(map)
+        public PottingService(World world) : base(world)
         {
         }
 
@@ -29,7 +28,8 @@ namespace PlantGenetics
             base.ExposeData();
             Scribe_Collections.Look(ref _clones, "clones", LookMode.Deep);
             Scribe_References.Look(ref pottingBench, "pottingBench");
-            _clones ??= new List<CloneData>();            
+            _clones ??= new List<CloneData>();
+            InitClones();
         }
 
         public List<CloneData> Clones => _clones;
@@ -42,9 +42,9 @@ namespace PlantGenetics
             return true;
         }
 
-        public override void MapComponentTick()
+        public override void WorldComponentTick()
         {
-            base.MapComponentTick();
+            base.WorldComponentTick();
             if (GenTicks.TicksGame % 500 == 300) RareTick();
         }
 
@@ -57,6 +57,8 @@ namespace PlantGenetics
                     if (clone.status.Equals("breeding"))
                     {
                         ThingDef newBreed = BreedHelper.AddBreedFromClone(clone);
+                        Messages.Message("Succesfully created a new plant species: " + clone.newName, MessageTypeDefOf.NeutralEvent);
+
                         /*
                          *  check for seedsplease mod and spawn seeds of this new species
                          */
@@ -71,7 +73,7 @@ namespace PlantGenetics
                             newSeeds.stackCount = Mathf.RoundToInt(stackCount);
                             GenPlace.TryPlaceThing(newSeeds, pottingBench.Position, pottingBench.Map, ThingPlaceMode.Near);
                         }                        
-                        Clones.Remove(clone);
+                        clone.status = "done";
                     }
                 }
             }
@@ -85,6 +87,14 @@ namespace PlantGenetics
         public void Finish(CloneData clone)
         {
             clone.finishDays = GenDate.DaysPassedFloat;
+        }
+
+        public void InitClones()
+        {
+            foreach (var clone in Clones.ToList())
+            {
+                BreedHelper.AddBreedFromClone(clone);
+            }
         }
     }
 }

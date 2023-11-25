@@ -9,12 +9,11 @@
           "build/Krafs.Publicizer.targets": {}
         }
       },
-      "Krafs.Rimworld.Ref/1.4.3704": {
+      "Krafs.Rimworld.Ref/1.4.3901": {
         "type": "package",
         "compile": {
           "ref/net472/Assembly-CSharp-firstpass.dll": {},
           "ref/net472/Assembly-CSharp.dll": {},
-          "ref/net472/Assembly-CSharp_publicised.dll": {},
           "ref/net472/ISharpZipLib.dll": {},
           "ref/net472/Mono.Posix.dll": {},
           "ref/net472/Mono.Security.dll": {},
@@ -124,22 +123,20 @@
         "krafs.publicizer.nuspec"
       ]
     },
-    "Krafs.Rimworld.Ref/1.4.3704": {
-      "sha512": "INLy9Od0/msMfI9LROUaueV3QL8mnIB18xRjei5/Sw7HAYaw10emQKzts7la6AfSoFmB8mEY20bLVTnXNdeU7g==",
+    "Krafs.Rimworld.Ref/1.4.3901": {
+      "sha512": "CdGJZ8/Ykq4EqwqdkenU4htlnJm8kS8eY+/XOjgbKgJdWXslOrHSViYM9vd6FM9S7cpoIqIj5cMol0DTmSV0Rg==",
       "type": "package",
-      "path": "krafs.rimworld.ref/1.4.3704",
+      "path": "krafs.rimworld.ref/1.4.3901",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
         "LICENSE.md",
         "README.md",
         "icon.png",
-        "krafs.rimworld.ref.1.4.3704.nupkg.sha512",
+        "krafs.rimworld.ref.1.4.3901.nupkg.sha512",
         "krafs.rimworld.ref.nuspec",
         "ref/net472/Assembly-CSharp-firstpass.dll",
         "ref/net472/Assembly-CSharp.dll",
-        "ref/net472/Assembly-CSharp_hash.hash",
-        "ref/net472/Assembly-CSharp_publicised.dll",
         "ref/net472/ISharpZipLib.dll",
         "ref/net472/Mono.Posix.dll",
         "ref/net472/Mono.Security.dll",

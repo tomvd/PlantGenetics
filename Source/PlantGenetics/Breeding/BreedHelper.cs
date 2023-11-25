@@ -12,11 +12,17 @@ public static class BreedHelper
 {
     public static ThingDef AddBreedFromClone(CloneData cloneData)
     {
-        var fields = typeof(ThingDef).GetFields(BindingFlags.Public | BindingFlags.Instance);
         ThingDef template = cloneData.PlantDef;
         string cloneDefName = cloneData.Trait.defName +"_"+ template.defName;
+        cloneData.defName = cloneDefName;
+        if (DefDatabase<ThingDef>.GetNamed(cloneDefName, false) != null)
+        {
+            Log.Message("already exists in defdatabase: " + cloneDefName);
+            return DefDatabase<ThingDef>.GetNamed(cloneDefName, false);
+        }
         string cloneName = cloneData.newName;
         ThingDef clone = new ThingDef();
+        var fields = typeof(ThingDef).GetFields(BindingFlags.Public | BindingFlags.Instance);
                 
         // Copy fields
         foreach (var field in fields)
@@ -89,6 +95,10 @@ public static class BreedHelper
             te.SpecialTrait = cloneData.Trait;
             clone.modExtensions ??= new List<DefModExtension>();
             clone.modExtensions.Add(te);
+            /*if (cloneData.Trait.Equals(InternalDefOf.Summer) && !clone.plant.sowTags.Contains("VCE_Sandy"))
+            {
+                clone.plant.sowTags.Add("VCE_Sandy");
+            }*/
         }
 
         HashSet<ushort> takenHashes = ShortHashGiver.takenHashesPerDeftype[typeof(ThingDef)];
@@ -96,7 +106,6 @@ public static class BreedHelper
 
         DefDatabase<ThingDef>.Add(clone);
         clone.ResolveReferences();
-        Messages.Message("Succesfully created a new plant species: " + cloneName, MessageTypeDefOf.NeutralEvent);
         return clone;
     }
     

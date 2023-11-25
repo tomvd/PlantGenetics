@@ -18,6 +18,7 @@ public static class InternalDefOf
 	public static readonly JobDef UsePottingBench;
 	public static readonly ThingDef PottingBench;
 	public static readonly TraitDef Winter;
+	//public static readonly TraitDef Summer;
 
 }
 
