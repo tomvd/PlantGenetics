@@ -29,7 +29,10 @@ namespace PlantGenetics
             Scribe_Collections.Look(ref _clones, "clones", LookMode.Deep);
             Scribe_References.Look(ref pottingBench, "pottingBench");
             _clones ??= new List<CloneData>();
-            InitClones();
+            if (Scribe.mode == LoadSaveMode.LoadingVars)
+            {
+                InitClones();
+            }
         }
 
         public List<CloneData> Clones => _clones;
@@ -81,7 +84,7 @@ namespace PlantGenetics
         public void Breed(CloneData clone)
         {
             clone.status = "breeding";
-            clone.finishDays = GenDate.DaysPassedFloat + clone.PlantDef.plant.growDays / 2f;
+            clone.finishDays = GenDate.DaysPassedFloat + DefDatabase<ThingDef>.GetNamed(clone.PlantDef).plant.growDays / 2f;
         }
 
         public void Finish(CloneData clone)
@@ -91,10 +94,13 @@ namespace PlantGenetics
 
         public void InitClones()
         {
-            foreach (var clone in Clones.ToList())
+            //Log.Message("Adding already discovered breed: " + Clones.Count);
+            foreach (var clone in Clones.Where(data => data.status.Equals("done")).ToList())
             {
                 BreedHelper.AddBreedFromClone(clone);
+                Log.Message("Adding already discovered breed: " + clone.newName);
             }
+            ResourceCounter.ResetDefs();
         }
     }
 }

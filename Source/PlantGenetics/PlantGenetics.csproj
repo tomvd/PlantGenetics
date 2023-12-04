@@ -41,6 +41,7 @@
     <ItemGroup>
       <Reference Include="BirdSeedsPlease">
         <HintPath>..\..\..\..\..\..\workshop\content\294100\2586052937\1.4\Assemblies\BirdSeedsPlease.dll</HintPath>
+          <Private>false</Private>
       </Reference>
     </ItemGroup>
 </Project>

@@ -29,7 +29,7 @@ public class Dialog_GivePlantName : Window
 		closeOnCancel = false;
 		absorbInputAroundWindow = true;
 		Plant = plant;
-		curName = plant.Trait.LabelCap +" " + plant.PlantDef.LabelCap;
+		curName = plant.Trait.LabelCap +" " + DefDatabase<ThingDef>.GetNamed(plant.PlantDef).LabelCap;
 	}
 
 	public override void DoWindowContents(Rect rect)

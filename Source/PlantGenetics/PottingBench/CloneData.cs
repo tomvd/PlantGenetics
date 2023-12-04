@@ -7,11 +7,11 @@ public class CloneData : IExposable
 {
     public CloneData(Plant plant)
     {
-        PlantDef = plant.def;
+        PlantDef = plant.def.defName;
         Trait = plant.TryGetComp<CompPlantGenetics>().Trait;
     }
 
-    public CloneData(ThingDef plantDef, TraitDef trait, string status, float finishDays, string newName, string defName)
+    public CloneData(string plantDef, TraitDef trait, string status, float finishDays, string newName, string defName)
     {
         PlantDef = plantDef;
         Trait = trait;
@@ -25,7 +25,7 @@ public class CloneData : IExposable
     {
     }
     
-    public ThingDef PlantDef;
+    public string PlantDef;
     public TraitDef Trait;
     public string status;
     public float finishDays;
@@ -34,7 +34,7 @@ public class CloneData : IExposable
 
     public void ExposeData()
     {
-        Scribe_Defs.Look(ref PlantDef, "PlantDef");
+        Scribe_Values.Look(ref PlantDef, "PlantDef");
         Scribe_Defs.Look(ref Trait, "Trait");
         Scribe_Values.Look(ref status, "status");
         Scribe_Values.Look(ref finishDays, "finishDays");

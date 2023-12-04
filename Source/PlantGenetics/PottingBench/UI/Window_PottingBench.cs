@@ -104,7 +104,7 @@ namespace PlantGenetics
                 if (highlight) Widgets.DrawHighlight(fullRect);
                 highlight = !highlight;
                 Text.Anchor = TextAnchor.MiddleLeft;
-                Widgets.Label(nameRect, clone.newName ?? clone.PlantDef.label);
+                Widgets.Label(nameRect, clone.newName ?? DefDatabase<ThingDef>.GetNamed(clone.PlantDef).label);
                 Text.Anchor = TextAnchor.MiddleCenter;
                 Widgets.Label(valueRect, clone.status != null ? "" : clone.Trait.label);
 

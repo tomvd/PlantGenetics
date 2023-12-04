@@ -12,7 +12,7 @@ public static class BreedHelper
 {
     public static ThingDef AddBreedFromClone(CloneData cloneData)
     {
-        ThingDef template = cloneData.PlantDef;
+        ThingDef template = DefDatabase<ThingDef>.GetNamed(cloneData.PlantDef);
         string cloneDefName = cloneData.Trait.defName +"_"+ template.defName;
         cloneData.defName = cloneDefName;
         if (DefDatabase<ThingDef>.GetNamed(cloneDefName, false) != null)
