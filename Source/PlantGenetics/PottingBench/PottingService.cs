@@ -95,7 +95,7 @@ namespace PlantGenetics
         public void InitClones()
         {
             //Log.Message("Adding already discovered breed: " + Clones.Count);
-            foreach (var clone in Clones.Where(data => data.status.Equals("done")).ToList())
+            foreach (var clone in Clones.Where(data => data.status is "done").ToList())
             {
                 BreedHelper.AddBreedFromClone(clone);
                 Log.Message("Adding already discovered breed: " + clone.newName);
