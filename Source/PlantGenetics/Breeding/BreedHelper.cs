@@ -37,6 +37,8 @@ public static class BreedHelper
         clone.defName = cloneDefName;
         clone.label = cloneName;
         clone.shortHash = 0;
+        
+        // modify Trait properties
         if (cloneData.Trait.associatedStats != null && cloneData.Trait.associatedStats.Count > 0)
         {
             clone.statBases = new List<StatModifier>(); // otherwise it seems to overwrite stats of the template?

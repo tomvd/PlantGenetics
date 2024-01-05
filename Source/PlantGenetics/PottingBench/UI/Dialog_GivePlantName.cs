@@ -29,7 +29,14 @@ public class Dialog_GivePlantName : Window
 		closeOnCancel = false;
 		absorbInputAroundWindow = true;
 		Plant = plant;
-		curName = plant.Trait.LabelCap +" " + DefDatabase<ThingDef>.GetNamed(plant.PlantDef).LabelCap;
+		if (plant.newName != null)
+		{
+			curName = plant.newName;
+		}
+		else
+		{
+			curName = plant.Trait.LabelCap + " " + DefDatabase<ThingDef>.GetNamed(plant.PlantDef).LabelCap;
+		}
 	}
 
 	public override void DoWindowContents(Rect rect)
@@ -57,6 +64,15 @@ public class Dialog_GivePlantName : Window
 		if (IsValidName(text2))
 		{
 			Plant.newName = text2;
+			if (Plant.defName != null)
+			{
+				ThingDef thing = DefDatabase<ThingDef>.GetNamed(Plant.defName, false);
+				if (thing != null)
+				{
+					thing.label = text2;
+					thing.ResolveReferences();
+				}
+			}
 			Find.WindowStack.TryRemove(this);
 		}
 		else

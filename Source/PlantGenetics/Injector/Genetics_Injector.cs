@@ -12,7 +12,7 @@ public static class InjectDNA
     {
         var defs = DefDatabase<ThingDef>.AllDefsListForReading.Where(def => def.plant != null).ToList();
         defs.RemoveDuplicates();
-        //Log.Message(defs.Count + " todo ");
+        //Log.Message(defs.Count + " to do ");
         
         foreach (var def in defs)
         {

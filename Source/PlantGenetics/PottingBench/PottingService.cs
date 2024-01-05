@@ -61,7 +61,6 @@ namespace PlantGenetics
                     {
                         ThingDef newBreed = BreedHelper.AddBreedFromClone(clone);
                         Messages.Message("Succesfully created a new plant species: " + clone.newName, MessageTypeDefOf.NeutralEvent);
-
                         /*
                          *  check for seedsplease mod and spawn seeds of this new species
                          */
@@ -91,15 +90,35 @@ namespace PlantGenetics
         {
             clone.finishDays = GenDate.DaysPassedFloat;
         }
+        
+        public void Remove(CloneData clone)
+        {
+            if (clone.defName != null)
+            {
+                ThingDef thing = DefDatabase<ThingDef>.GetNamed(clone.defName, false);
+                if (thing != null)
+                {
+                    DefDatabase<ThingDef>.Remove(thing);
+                    thing.ResolveReferences();
+                }
+            }
+
+            clone.status = "removed";
+        }
 
         public void InitClones()
         {
             //Log.Message("Adding already discovered breed: " + Clones.Count);
-            foreach (var clone in Clones.Where(data => data.status is "done").ToList())
+            foreach (var clone in Clones.Where(data => data.defName != null).ToList())
             {
                 BreedHelper.AddBreedFromClone(clone);
                 Log.Message("Adding already discovered breed: " + clone.newName);
             }
+            foreach (var clone in Clones.Where(data => data.status is "removed").ToList())
+            {
+                Remove(clone);
+                Log.Message("Hide removed breed: " + clone.newName);
+            }            
             ResourceCounter.ResetDefs();
         }
     }

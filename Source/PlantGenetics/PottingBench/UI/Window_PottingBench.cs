@@ -61,15 +61,15 @@ namespace PlantGenetics
         {
             inRect.width = 150f;
             Widgets.Label(inRect,
-                "Pots in use: "+_pottingService.Clones.Where(clone => clone.status is not "done").ToList().Count+"/12");
+                "Pots in use: "+_pottingService.Clones.Where(clone => clone.status is not "done" && clone.status is not "removed").ToList().Count+"/12");
 
         }
         
-        private void OnBreedKeyPressed(CloneData pawn)
+        private void OnBreedKeyPressed(CloneData clone)
         {
             //SoundDefOf.Interact_Sow.PlayOneShotOnCamera();
-            Find.WindowStack.Add(new Dialog_GivePlantName(pawn));
-            _pottingService.Breed(pawn);
+            Find.WindowStack.Add(new Dialog_GivePlantName(clone));
+            _pottingService.Breed(clone);
         }
 
         private void DoClonesList(ref Rect inRect)
@@ -86,40 +86,87 @@ namespace PlantGenetics
             titleRect.x += 150f;
             titleRect.width = 120f;
             Text.Anchor = TextAnchor.MiddleCenter;
-            var valueRect = new Rect(titleRect);
+            var traitRect = new Rect(titleRect);
             Widgets.Label(titleRect, "trait");
             titleRect.x += 100f;
-            titleRect.width = 200f;
-            var numRect = new Rect(titleRect);
+            titleRect.width = 70f;
+            var actionRect = new Rect(titleRect);
             Widgets.Label(titleRect, "action");
+            titleRect.x += 100f;
+            titleRect.width = 70f;
+            var removeRect = new Rect(titleRect);
+            Widgets.Label(titleRect, "remove");
+            
             GUI.color = Color.white;
             var highlight = true;
-            foreach (var clone in _pottingService.Clones.Where(clone => clone.status is not "done").ToList())
+            foreach (var clone in _pottingService.Clones.Where(clone => clone.status is not "removed").ToList())
             {
                 nameRect.y += 20f;
-                valueRect.y += 20f;
-                numRect.y += 20f;
-                var fullRect = new Rect(nameRect.x - 4f, nameRect.y, nameRect.width + valueRect.width + numRect.width,
+                traitRect.y += 20f;
+                actionRect.y += 20f;
+                removeRect.y += 20f;
+                var fullRect = new Rect(nameRect.x - 4f, nameRect.y, nameRect.width + traitRect.width + actionRect.width,
                     20f);
                 if (highlight) Widgets.DrawHighlight(fullRect);
                 highlight = !highlight;
                 Text.Anchor = TextAnchor.MiddleLeft;
                 Widgets.Label(nameRect, clone.newName ?? DefDatabase<ThingDef>.GetNamed(clone.PlantDef).label);
                 Text.Anchor = TextAnchor.MiddleCenter;
-                Widgets.Label(valueRect, clone.status != null ? "" : clone.Trait.label);
+                
+                if (clone.Trait != null)
+                    Widgets.Label(traitRect, clone.Trait.label);
 
-
-                if (clone.status == null && Widgets.ButtonText(numRect, "Breed"))
+                if (clone.status == null && Widgets.ButtonText(actionRect, "Breed"))
                 {
                         OnBreedKeyPressed(clone);
                 }
-                if (clone.status != null)
+                if (clone.status is "breeding")
                 {
-                    Widgets.Label(numRect, clone.status + " " + (clone.finishDays - GenDate.DaysPassed).ToStringDecimalIfSmall() + " days");
+                    if (DebugSettings.ShowDevGizmos)
+                    {
+                        if (Widgets.ButtonText(actionRect, "Debug - finish"))
+                            _pottingService.Finish(clone);
+                    }
+                    else
+                    {
+                        Widgets.Label(actionRect,(clone.finishDays - GenDate.DaysPassed).ToStringDecimalIfSmall() +
+                            " days left");
+                    }
                 }
-                if (DebugSettings.ShowDevGizmos && clone.status is "breeding" && Widgets.ButtonText(numRect, "Debug - finish"))
+
+                if (clone.status is "done")
                 {
-                    _pottingService.Finish(clone);
+                    if (Widgets.ButtonText(actionRect, "Rename"))
+                    {
+                        Find.WindowStack.Add(new Dialog_GivePlantName(clone));
+                    }
+                }
+
+                if (Widgets.ButtonText(removeRect, "Remove"))
+                {
+                    bool allowed = true;
+                    if (clone.defName != null) {
+                        ThingDef thing = DefDatabase<ThingDef>.GetNamed(clone.defName, false);
+                        if (thing != null)
+                        {
+                            if (map.zoneManager.allZones.Any(zone =>
+                                    zone is Zone_Growing growing &&
+                                    growing.GetPlantDefToGrow().Equals(thing)))
+                            {
+                                Messages.Message("Cant remove plant definition because there is a growing zone for it!",
+                                    MessageTypeDefOf.RejectInput);
+                                allowed = false;
+                            }
+                            else if (map.listerThings.ThingsOfDef(thing).Count > 0)
+                            {
+                                Messages.Message("Cant remove plant definition because there are still plants of this type!",
+                                    MessageTypeDefOf.RejectInput);
+                                allowed = false;
+                            }
+                        }
+                    }
+                    if (allowed) Find.WindowStack.Add(Dialog_MessageBox.CreateConfirmation("AreYouSure".Translate(),
+                        () => { _pottingService.Remove(clone); }, true, "You are about to remove " + clone.newName));
                 }
             }
         }        

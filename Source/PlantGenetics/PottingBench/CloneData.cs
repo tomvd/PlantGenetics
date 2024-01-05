@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using RimWorld;
 using Verse;
 
@@ -27,7 +28,7 @@ public class CloneData : IExposable
     
     public string PlantDef;
     public TraitDef Trait;
-    public string status;
+    public string status; // null, breeding, done or removed
     public float finishDays;
     public string newName;
     public string defName;
