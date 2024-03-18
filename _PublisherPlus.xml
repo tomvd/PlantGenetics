@@ -2,9 +2,9 @@
 <Configuration>
   <Excluded>
     <exclude>.git</exclude>
-    <exclude>1.4\Textures\design</exclude>
     <exclude>About\preview.afdesign</exclude>
     <exclude>Source</exclude>
+    <exclude>Textures\design</exclude>
     <exclude>todo.txt</exclude>
   </Excluded>
 </Configuration>

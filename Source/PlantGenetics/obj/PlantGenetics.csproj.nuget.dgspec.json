@@ -48,7 +48,7 @@
             },
             "Krafs.Rimworld.Ref": {
               "target": "Package",
-              "version": "[*, )",
+              "version": "[1.5.4038-beta, )",
               "generatePathProperty": true
             },
             "Lib.Harmony": {
