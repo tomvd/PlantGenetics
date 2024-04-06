@@ -26,20 +26,6 @@ namespace PlantGenetics
             return "Trait: " + Trait.LabelCap;
         }
 
-
-        public override IEnumerable<StatDrawEntry> SpecialDisplayStats()
-        {
-            if (parent.def.GetModExtension<TraitExtension>() != null &&
-                parent.def.GetModExtension<TraitExtension>().SpecialTrait != null &&
-                parent.def.GetModExtension<TraitExtension>().SpecialTrait
-                    .Equals(InternalDefOf.Winter))
-            {
-                yield return new StatDrawEntry(StatCategoryDefOf.Genetics, "MinGrowthTemperature".Translate(), (-16f).ToStringTemperature(), "Stat_Thing_Plant_MinGrowthTemperature_Desc".Translate(), 4152);
-                yield return new StatDrawEntry(StatCategoryDefOf.Genetics, "MaxGrowthTemperature".Translate(), 41f.ToStringTemperature(), "Stat_Thing_Plant_MaxGrowthTemperature_Desc".Translate(), 4153);
-            }            
-        }
-
-
         public override IEnumerable<Gizmo> CompGetGizmosExtra()
         {
             /*if (parent is Plant plant && plant.def.Minifiable

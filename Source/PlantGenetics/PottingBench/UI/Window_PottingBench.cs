@@ -33,9 +33,9 @@ namespace PlantGenetics
             var rect = new Rect(inRect);
             var buttonBarRect = rect.TakeBottomPart(40f);
             Widgets.DrawHighlight(buttonBarRect);
-            var topBarRect = rect.TakeTopPart(40f);
-            Widgets.DrawHighlight(topBarRect);
-            DoTopBarContents(topBarRect);
+            //var topBarRect = rect.TakeTopPart(40f);
+            //Widgets.DrawHighlight(topBarRect);
+            //DoTopBarContents(topBarRect);
 
             Text.Anchor = TextAnchor.MiddleLeft;
             Text.Font = GameFont.Small;
@@ -60,8 +60,8 @@ namespace PlantGenetics
         private void DoTopBarContents(Rect inRect)
         {
             inRect.width = 150f;
-            Widgets.Label(inRect,
-                "Pots in use: "+_pottingService.Clones.Where(clone => clone.status is not "done" && clone.status is not "removed").ToList().Count+"/12");
+            //Widgets.Label(inRect,
+//                "Pots in use: "+_pottingService.Clones.Where(clone => clone.status is not "done" && clone.status is not "removed").ToList().Count+"/12");
 
         }
         
@@ -74,7 +74,7 @@ namespace PlantGenetics
 
         private void DoClonesList(ref Rect inRect)
         {
-            var rect = inRect.TopPartPixels(Mathf.Max(20f + _pottingService.Clones.Count * 30f, 120f));
+            var rect = inRect.TopPartPixels(Mathf.Min(20f + _pottingService.Clones.Count * 30f, InitialSize.y));
             inRect.yMin += rect.height;
             var titleRect = rect.TakeTopPart(20f);
             var iconRect = rect.LeftPartPixels(105f).ContractedBy(5f);
@@ -105,6 +105,7 @@ namespace PlantGenetics
                 traitRect.y += 20f;
                 actionRect.y += 20f;
                 removeRect.y += 20f;
+                if (nameRect.y > InitialSize.y) break;
                 var fullRect = new Rect(nameRect.x - 4f, nameRect.y, nameRect.width + traitRect.width + actionRect.width,
                     20f);
                 if (highlight) Widgets.DrawHighlight(fullRect);

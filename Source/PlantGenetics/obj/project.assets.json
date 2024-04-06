@@ -94,7 +94,7 @@
           "ref/net472/mscorlib.dll": {}
         }
       },
-      "Lib.Harmony/2.3.1.1": {
+      "Lib.Harmony/2.3.3": {
         "type": "package",
         "compile": {
           "lib/net48/0Harmony.dll": {
@@ -219,17 +219,17 @@
         "ref/net472/mscorlib.dll"
       ]
     },
-    "Lib.Harmony/2.3.1.1": {
-      "sha512": "tydjMTa88RB7MjdP6TzYgclwVRv6KqvvsprinCf0xPuHgemj2k0ZMJnC2b8YwwyGr7+sAG3e4P0ii09uwwRBMA==",
+    "Lib.Harmony/2.3.3": {
+      "sha512": "qxO8d2q7luoY8mTfCStQFOgRSd3dWZSS0Ffi5nrjX4qFkZxEBAEvNh5b/ZejTl2kY0fJs62LmfRJkBBTeiuuyQ==",
       "type": "package",
-      "path": "lib.harmony/2.3.1.1",
+      "path": "lib.harmony/2.3.3",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
         "HarmonyLogo.png",
         "LICENSE",
         "README.md",
-        "lib.harmony.2.3.1.1.nupkg.sha512",
+        "lib.harmony.2.3.3.nupkg.sha512",
         "lib.harmony.nuspec",
         "lib/net35/0Harmony.dll",
         "lib/net35/0Harmony.pdb",

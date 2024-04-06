@@ -18,7 +18,7 @@ public static class WinterTrait
     }    
     
     /// <summary>
-    /// Plants with wintertrait grow slower below -10, but already above 25
+    /// Plants with wintertrait grow until 0
     /// </summary>
     [HarmonyPatch(typeof(Plant), nameof(Plant.GrowthRateFactor_Temperature), MethodType.Getter)]
     public class GrowthRateFactor_Temperature
@@ -28,22 +28,16 @@ public static class WinterTrait
         {
             if (__instance.hasWinterTrait())
             {
-                if (!GenTemperature.TryGetTemperatureForCell(__instance.Position, __instance.Map, out var tempResult))
+                if (!GenTemperature.TryGetTemperatureForCell(__instance.Position, __instance.Map, out var cellTemp))
                 {
                     __result = 1f;
                 }
                 else
                 {
                     __result = 1f;
-                    
-                    if (tempResult < -10f)
+                    if (cellTemp > 42f)
                     {
-                        __result = Mathf.InverseLerp(-16f, -10f, tempResult);
-                    }
-
-                    if (tempResult > 25f)
-                    {
-                        __result = Mathf.InverseLerp(41f, 25f, tempResult);
+                        __result = Mathf.InverseLerp(58f, 42f, cellTemp);
                     }
                 }
                 return false;
@@ -51,47 +45,8 @@ public static class WinterTrait
             return true; // do the vanilla thang
         }
     }
-    
-    /*
-     * public virtual float GrowthRate
-{
-	get
-	{
-		if (Blighted)
-		{
-			return 0f;
-		}
-		if (base.Spawned && !PlantUtility.GrowthSeasonNow(base.Position, base.Map))
-		{
-			return 0f;
-		}
-		return GrowthRateFactor_Fertility * GrowthRateFactor_Temperature * GrowthRateFactor_Light * GrowthRateFactor_NoxiousHaze;
-	}
-}
-     */
-    
-    [HarmonyPatch(typeof(Plant), nameof(Plant.GrowthRate), MethodType.Getter)]
-    public class GrowthRate
-    {
-        [HarmonyPrefix]
-        public static bool Prefix(ref float __result, Plant __instance)
-        {
-            if (__instance.hasWinterTrait())
-            {
-                if (__instance.Blighted)
-                {
-                    __result = 0f;
-                }
-                // removed the sowing season now requirement
-                __result = __instance.GrowthRateFactor_Fertility * __instance.GrowthRateFactor_Temperature * __instance.GrowthRateFactor_Light * __instance.GrowthRateFactor_NoxiousHaze;                
-                return false;
-            }
-            return true; // do the vanilla thang
-        }
-    }    
-    
     /// <summary>
-    /// Plants with wintertrait go leafless at -50
+    /// Plants with wintertrait go leafless at -999
     /// </summary>
     [HarmonyPatch(typeof(Plant), nameof(Plant.LeaflessTemperatureThresh), MethodType.Getter)]
     public class LeaflessTemperatureThresh
@@ -100,7 +55,7 @@ public static class WinterTrait
         public static void Postfix(ref float __result, Plant __instance)
         {
             if (__instance.hasWinterTrait())
-                __result = -50f;
+                __result = -999;
         }
     }
 }
