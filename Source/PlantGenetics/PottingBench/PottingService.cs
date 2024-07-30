@@ -64,7 +64,7 @@ namespace PlantGenetics
                         /*
                          *  check for seedsplease mod and spawn seeds of this new species
                          */
-                        if (ModsConfig.IsActive("owlchemist.seedspleaselite"))
+                        if (ModsConfig.IsActive("owlchemist.seedspleaselite") || ModsConfig.IsActive("Evyatar108.SeedsPleaseLiteRedux"))
                         {
                             newBreed.blueprintDef = null;
                             MethodInfo original = AccessTools.Method("SeedsPleaseLite.SeedsPleaseUtility:Setup");

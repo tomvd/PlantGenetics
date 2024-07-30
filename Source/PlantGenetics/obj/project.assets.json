@@ -9,25 +9,30 @@
           "build/Krafs.Publicizer.targets": {}
         }
       },
-      "Krafs.Rimworld.Ref/1.4.3901": {
+      "Krafs.Rimworld.Ref/1.5.4146-beta": {
         "type": "package",
         "compile": {
           "ref/net472/Assembly-CSharp-firstpass.dll": {},
           "ref/net472/Assembly-CSharp.dll": {},
-          "ref/net472/Assembly-CSharp_publicised.dll": {},
           "ref/net472/ISharpZipLib.dll": {},
           "ref/net472/Mono.Posix.dll": {},
           "ref/net472/Mono.Security.dll": {},
           "ref/net472/NAudio.dll": {},
           "ref/net472/NVorbis.dll": {},
+          "ref/net472/System.ComponentModel.Composition.dll": {},
           "ref/net472/System.Configuration.dll": {},
           "ref/net472/System.Core.dll": {},
           "ref/net472/System.Runtime.Serialization.dll": {},
+          "ref/net472/System.Runtime.dll": {},
           "ref/net472/System.Security.dll": {},
           "ref/net472/System.ServiceModel.Internals.dll": {},
           "ref/net472/System.Xml.Linq.dll": {},
           "ref/net472/System.Xml.dll": {},
           "ref/net472/System.dll": {},
+          "ref/net472/Unity.Burst.Unsafe.dll": {},
+          "ref/net472/Unity.Burst.dll": {},
+          "ref/net472/Unity.Mathematics.dll": {},
+          "ref/net472/Unity.MemoryProfiler.dll": {},
           "ref/net472/Unity.TextMeshPro.dll": {},
           "ref/net472/UnityEngine.AIModule.dll": {},
           "ref/net472/UnityEngine.ARModule.dll": {},
@@ -124,35 +129,39 @@
         "krafs.publicizer.nuspec"
       ]
     },
-    "Krafs.Rimworld.Ref/1.4.3901": {
-      "sha512": "CdGJZ8/Ykq4EqwqdkenU4htlnJm8kS8eY+/XOjgbKgJdWXslOrHSViYM9vd6FM9S7cpoIqIj5cMol0DTmSV0Rg==",
+    "Krafs.Rimworld.Ref/1.5.4146-beta": {
+      "sha512": "n0lxQmmiaNep+fqwbt6KSz+adpEmDAe1OVimt77Z4GUjvu0kniOndl0jYnGremwqZGl7ZGydfr0JaXvFIdQZrg==",
       "type": "package",
-      "path": "krafs.rimworld.ref/1.4.3901",
+      "path": "krafs.rimworld.ref/1.5.4146-beta",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
         "LICENSE.md",
         "README.md",
         "icon.png",
-        "krafs.rimworld.ref.1.4.3901.nupkg.sha512",
+        "krafs.rimworld.ref.1.5.4146-beta.nupkg.sha512",
         "krafs.rimworld.ref.nuspec",
         "ref/net472/Assembly-CSharp-firstpass.dll",
         "ref/net472/Assembly-CSharp.dll",
-        "ref/net472/Assembly-CSharp_hash.hash",
-        "ref/net472/Assembly-CSharp_publicised.dll",
         "ref/net472/ISharpZipLib.dll",
         "ref/net472/Mono.Posix.dll",
         "ref/net472/Mono.Security.dll",
         "ref/net472/NAudio.dll",
         "ref/net472/NVorbis.dll",
+        "ref/net472/System.ComponentModel.Composition.dll",
         "ref/net472/System.Configuration.dll",
         "ref/net472/System.Core.dll",
         "ref/net472/System.Runtime.Serialization.dll",
+        "ref/net472/System.Runtime.dll",
         "ref/net472/System.Security.dll",
         "ref/net472/System.ServiceModel.Internals.dll",
         "ref/net472/System.Xml.Linq.dll",
         "ref/net472/System.Xml.dll",
         "ref/net472/System.dll",
+        "ref/net472/Unity.Burst.Unsafe.dll",
+        "ref/net472/Unity.Burst.dll",
+        "ref/net472/Unity.Mathematics.dll",
+        "ref/net472/Unity.MemoryProfiler.dll",
         "ref/net472/Unity.TextMeshPro.dll",
         "ref/net472/UnityEngine.AIModule.dll",
         "ref/net472/UnityEngine.ARModule.dll",
@@ -268,7 +277,7 @@
   "projectFileDependencyGroups": {
     ".NETFramework,Version=v4.8": [
       "Krafs.Publicizer >= 1.0.3",
-      "Krafs.Rimworld.Ref >= 1.4.3901",
+      "Krafs.Rimworld.Ref >= 1.5.4146-beta",
       "Lib.Harmony >= *"
     ]
   },
@@ -305,6 +314,11 @@
         "warnAsError": [
           "NU1605"
         ]
+      },
+      "restoreAuditProperties": {
+        "enableAudit": "true",
+        "auditLevel": "low",
+        "auditMode": "direct"
       }
     },
     "frameworks": {
@@ -319,7 +333,7 @@
           },
           "Krafs.Rimworld.Ref": {
             "target": "Package",
-            "version": "[1.4.3901, )",
+            "version": "[1.5.4146-beta, )",
             "generatePathProperty": true
           },
           "Lib.Harmony": {
@@ -328,7 +342,7 @@
             "version": "[*, )"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.103\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.204\\RuntimeIdentifierGraph.json"
       }
     }
   }
