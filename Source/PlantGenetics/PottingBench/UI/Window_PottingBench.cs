@@ -12,6 +12,7 @@ namespace PlantGenetics
 
         private readonly Map map;
         private readonly PottingService _pottingService;
+        private Vector2 scrollPos;
         
         public Window_PottingBench(Pawn actor)
         {
@@ -74,10 +75,8 @@ namespace PlantGenetics
 
         private void DoClonesList(ref Rect inRect)
         {
-            var rect = inRect.TopPartPixels(Mathf.Min(20f + _pottingService.Clones.Count * 30f, InitialSize.y));
-            inRect.yMin += rect.height;
-            var titleRect = rect.TakeTopPart(20f);
-            var iconRect = rect.LeftPartPixels(105f).ContractedBy(5f);
+            var listRect = inRect.TakeBottomPart(inRect.height - 20);
+            var titleRect = inRect.TakeTopPart(20f);
             titleRect.x += 15f;
             Text.Anchor = TextAnchor.MiddleLeft;
             Text.Font = GameFont.Tiny;
@@ -96,6 +95,8 @@ namespace PlantGenetics
             titleRect.width = 70f;
             var removeRect = new Rect(titleRect);
             Widgets.Label(titleRect, "remove");
+            var viewRect = new Rect(0f, 0f, listRect.width - 60, 20f*_pottingService.Clones.Count(clone => clone.status is not "removed") + 20f);
+            Widgets.BeginScrollView(listRect, ref scrollPos, viewRect);
             
             GUI.color = Color.white;
             var highlight = true;
@@ -170,6 +171,7 @@ namespace PlantGenetics
                         () => { _pottingService.Remove(clone); }, true, "You are about to remove " + clone.newName));
                 }
             }
+            Widgets.EndScrollView();
         }        
     }
 }
