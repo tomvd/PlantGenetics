@@ -95,12 +95,16 @@ namespace PlantGenetics
         {
             if (clone.defName != null)
             {
-                ThingDef thing = DefDatabase<ThingDef>.GetNamed(clone.defName, false);
-                if (thing != null)
+                if (!Clones.Exists(x => x.PlantDef.Equals(clone.defName)))
                 {
-                    DefDatabase<ThingDef>.Remove(thing);
-                    thing.ResolveReferences();
+                    ThingDef thing = DefDatabase<ThingDef>.GetNamed(clone.defName, false);
+                    if (thing != null)
+                    {
+                        DefDatabase<ThingDef>.Remove(thing);
+                        thing.ResolveReferences();
+                    }
                 }
+                
             }
 
             clone.status = "removed";
