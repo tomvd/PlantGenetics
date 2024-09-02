@@ -106,7 +106,6 @@ namespace PlantGenetics
                 traitRect.y += 20f;
                 actionRect.y += 20f;
                 removeRect.y += 20f;
-                if (nameRect.y > InitialSize.y) break;
                 var fullRect = new Rect(nameRect.x - 4f, nameRect.y, nameRect.width + traitRect.width + actionRect.width,
                     20f);
                 if (highlight) Widgets.DrawHighlight(fullRect);
