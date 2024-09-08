@@ -146,29 +146,29 @@ namespace PlantGenetics
 
                 if (Widgets.ButtonText(removeRect, "Remove"))
                 {
-                    bool allowed = true;
-                    if (clone.defName != null) {
-                        ThingDef thing = DefDatabase<ThingDef>.GetNamed(clone.defName, false);
-                        if (thing != null)
+                    string warning = "";
+                    if (clone.defName != null)
+                    {
+                        ThingDef named = DefDatabase<ThingDef>.GetNamed(clone.defName, false);
+                        if (named != null)
                         {
-                            if (map.zoneManager.allZones.Any(zone =>
-                                    zone is Zone_Growing growing &&
-                                    growing.GetPlantDefToGrow().Equals(thing)))
+                            if (PottingService.IsExistGrowingZoneForClone(map, named))
                             {
-                                Messages.Message("Cant remove plant definition because there is a growing zone for it!",
-                                    MessageTypeDefOf.RejectInput);
-                                allowed = false;
+                                warning = "There is a growth zone for this plant. ";
                             }
-                            else if (map.listerThings.ThingsOfDef(thing).Count > 0)
+                            else if (PottingService.IsExistPlantOfCloneType(map, named))
                             {
-                                Messages.Message("Cant remove plant definition because there are still plants of this type!",
-                                    MessageTypeDefOf.RejectInput);
-                                allowed = false;
+                                warning = "Plants of this type still exist. ";
                             }
                         }
                     }
-                    if (allowed) Find.WindowStack.Add(Dialog_MessageBox.CreateConfirmation("AreYouSure".Translate(),
-                        () => { _pottingService.Remove(clone); }, true, "You are about to remove " + clone.newName));
+                    Find.WindowStack.Add(Dialog_MessageBox.CreateConfirmation(
+                        warning + "You are sure about to remove " + clone.newName + "?", 
+                        () => _pottingService.Remove(clone), 
+                        true, 
+                        "AreYouSure".Translate(), 
+                        WindowLayer.Dialog
+                    ));
                 }
             }
             Widgets.EndScrollView();
