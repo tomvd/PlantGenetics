@@ -104,7 +104,7 @@ public static class BreedHelper
         }
 
         HashSet<ushort> takenHashes = ShortHashGiver.takenHashesPerDeftype[typeof(ThingDef)];
-        typeof(ShortHashGiver).GetMethod("GiveShortHash", BindingFlags.NonPublic|BindingFlags.Static).Invoke(null, new object[] {clone, typeof(ThingDef), takenHashes});
+        ShortHashGiver.GiveShortHash(clone, typeof(ThingDef), takenHashes);
 
         DefDatabase<ThingDef>.Add(clone);
         clone.ResolveReferences();

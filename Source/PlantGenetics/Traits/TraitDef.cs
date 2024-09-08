@@ -6,7 +6,10 @@ namespace PlantGenetics;
 
 public class TraitDef : Def
 {
-    public float commonality; // percentage of this mutation to occur in the wild
+    /// <summary>
+    /// percentage of this mutation to occur in the wild
+    /// </summary>
+    public float commonality;
     public float statmultiplier; // if value exists
     public List<StatDef> associatedStats = new List<StatDef>();
     public string associatedPlantProperty;

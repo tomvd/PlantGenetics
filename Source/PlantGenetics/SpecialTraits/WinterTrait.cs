@@ -10,11 +10,8 @@ public static class WinterTrait
 {
     public static bool hasWinterTrait(this Plant plant)
     {
-        if (plant.def.GetModExtension<TraitExtension>() != null &&
-            plant.def.GetModExtension<TraitExtension>().SpecialTrait != null)
-            return plant.def.GetModExtension<TraitExtension>().SpecialTrait
-                .Equals(InternalDefOf.Winter);
-        else return false;
+        var traitExt = plant.def.GetModExtension<TraitExtension>();
+        return traitExt != null && traitExt.SpecialTrait != null && traitExt.SpecialTrait.Equals(InternalDefOf.Winter);
     }    
     
     /// <summary>

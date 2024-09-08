@@ -20,8 +20,7 @@ public static class InjectDNA
 
             if (!def.comps.Any(c => c.GetType() == typeof(CompProperties_PlantGenetics)))
             {
-                CompProperties_PlantGenetics prop =
-                    (CompProperties_PlantGenetics)Activator.CreateInstance(typeof(CompProperties_PlantGenetics));
+                CompProperties_PlantGenetics prop = new CompProperties_PlantGenetics();
                 def.comps.Add(prop);
                 //Log.Message(def.defName + ": added genetics");
             }

@@ -95,12 +95,12 @@ namespace PlantGenetics
             titleRect.width = 70f;
             var removeRect = new Rect(titleRect);
             Widgets.Label(titleRect, "remove");
-            var viewRect = new Rect(0f, 0f, listRect.width - 60, 20f*_pottingService.Clones.Count(clone => clone.status is not "removed") + 20f);
+            var viewRect = new Rect(0f, 0f, listRect.width - 60, 20f*_pottingService.Clones.Count(clone => clone.status is not CloneStatus.Removed) + 20f);
             Widgets.BeginScrollView(listRect, ref scrollPos, viewRect);
             
             GUI.color = Color.white;
             var highlight = true;
-            foreach (var clone in _pottingService.Clones.Where(clone => clone.status is not "removed").ToList())
+            foreach (var clone in _pottingService.Clones.Where(clone => clone.status is not CloneStatus.Removed).ToList())
             {
                 nameRect.y += 20f;
                 traitRect.y += 20f;
@@ -119,9 +119,9 @@ namespace PlantGenetics
 
                 if (clone.status == null && Widgets.ButtonText(actionRect, "Breed"))
                 {
-                        OnBreedKeyPressed(clone);
+                    OnBreedKeyPressed(clone);
                 }
-                if (clone.status is "breeding")
+                if (clone.status is CloneStatus.Breeding)
                 {
                     if (DebugSettings.ShowDevGizmos)
                     {
@@ -135,7 +135,7 @@ namespace PlantGenetics
                     }
                 }
 
-                if (clone.status is "done")
+                if (clone.status is CloneStatus.Done)
                 {
                     if (Widgets.ButtonText(actionRect, "Rename"))
                     {
