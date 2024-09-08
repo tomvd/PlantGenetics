@@ -45,7 +45,8 @@ public static class BreedHelper
             .OrderBy(x => x.Key)
             .Select(x => $"{x.Key.Substring(0, 4)}-{x.Value}");
         string traitsWithCountString = string.Join(" ", traitsWithCount);
-        return $"{thingDef.LabelCap}-GEN{traits.Count:000} {traitsWithCountString}";
+        int traitSum = traits.Sum(x => x.Value);
+        return $"{thingDef.LabelCap}-GEN{traitSum:000} {traitsWithCountString}";
     }
 
     private static ThingDef CreatePlantThingDefFromTempalte(ThingDef template)
