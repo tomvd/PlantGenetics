@@ -74,53 +74,80 @@ namespace PlantGenetics
             _pottingService.Breed(clone);
         }
 
+        public const float BasicHeight = 20;
         private void DoClonesList(ref Rect inRect)
         {
-            var listRect = inRect.TakeBottomPart(inRect.height - 20);
-            var titleRect = inRect.TakeTopPart(20f);
-            titleRect.x += 15f;
+            
+            Rect NewRect(Rect rect, float offset, float width) {
+                return new Rect(rect.x + rect.width + offset, rect.y, width, rect.height);
+            }
+
+            var listRect = inRect.TakeBottomPart(inRect.height - BasicHeight);
+            var baseRect = inRect.TakeTopPart(20f);
+            baseRect.x += 15;
+            baseRect.width = 0;
+
+            var infoRect = NewRect(baseRect, 0, 20);
+
+            var nameRect = NewRect(infoRect, 10, 200);
+
             Text.Anchor = TextAnchor.MiddleLeft;
             Text.Font = GameFont.Tiny;
-            var nameRect = new Rect(titleRect);
-            Widgets.Label(titleRect, "plant");
-            titleRect.x += 150f;
-            titleRect.width = 120f;
+            Widgets.Label(nameRect, "plant");
+
+            var traitRect = NewRect(nameRect, 10, 120);
+
             Text.Anchor = TextAnchor.MiddleCenter;
-            var traitRect = new Rect(titleRect);
-            Widgets.Label(titleRect, "trait");
-            titleRect.x += 100f;
-            titleRect.width = 70f;
-            var actionRect = new Rect(titleRect);
-            Widgets.Label(titleRect, "action");
-            titleRect.x += 100f;
-            titleRect.width = 70f;
-            var removeRect = new Rect(titleRect);
-            Widgets.Label(titleRect, "remove");
-            var viewRect = new Rect(0f, 0f, listRect.width - 60, 20f*_pottingService.Clones.Count(clone => clone.status is not CloneStatus.Removed) + 20f);
+            Widgets.Label(traitRect, "trait");
+
+            var actionRect = NewRect(traitRect, 10, 120);
+
+            Widgets.Label(actionRect, "action");
+
+            var removeRect = NewRect(actionRect, 10, 120);
+
+            Widgets.Label(removeRect, "remove");
+
+            var totalWidth = removeRect.width + removeRect.x - baseRect.x;
+
+            var viewRect = new Rect(0f, 0f, listRect.width - 60, BasicHeight * (_pottingService.Clones.Count(clone => clone.status is not CloneStatus.Removed) + 1));
             Widgets.BeginScrollView(listRect, ref scrollPos, viewRect);
             
             GUI.color = Color.white;
             var highlight = true;
             foreach (var clone in _pottingService.Clones.Where(clone => clone.status is not CloneStatus.Removed).ToList())
             {
-                nameRect.y += 20f;
-                traitRect.y += 20f;
-                actionRect.y += 20f;
-                removeRect.y += 20f;
-                var fullRect = new Rect(nameRect.x - 4f, nameRect.y, nameRect.width + traitRect.width + actionRect.width,
-                    20f);
+                nameRect.y += BasicHeight;
+                traitRect.y += BasicHeight;
+                actionRect.y += BasicHeight;
+                removeRect.y += BasicHeight;
+                infoRect.y += BasicHeight;
+                var fullRect = new Rect(baseRect.x - 4f, nameRect.y, totalWidth + 4, BasicHeight);
                 if (highlight) Widgets.DrawHighlight(fullRect);
                 highlight = !highlight;
                 Text.Anchor = TextAnchor.MiddleLeft;
-                Widgets.Label(nameRect, clone.newName ?? DefDatabase<ThingDef>.GetNamed(clone.PlantDef).label);
+                var fullname = clone.newName ?? DefDatabase<ThingDef>.GetNamed(clone.PlantDef).label;
+                string name = fullname;
+                //Fix gui
+                if (name.Length > 30)
+                    name = name.Substring(0, 27) + "...";
+
+                Widgets.Label(nameRect, name);
                 Text.Anchor = TextAnchor.MiddleCenter;
                 
                 if (clone.Trait != null)
                     Widgets.Label(traitRect, clone.Trait.label);
 
-                if (clone.status == null && Widgets.ButtonText(actionRect, "Breed"))
-                {
-                    OnBreedKeyPressed(clone);
+                if (clone.status == null) {
+
+                    if (Widgets.ButtonText(actionRect, "Breed")) {
+                        OnBreedKeyPressed(clone);
+                    }
+
+                    var plantDef = BreedHelper.CreateThingDefFromCloneData(clone);
+                    plantDef.label = BreedHelper.GetNameSuggestionFromCloneDataV2(clone, _pottingService.Clones);
+                    _ = Widgets.InfoCardButton(infoRect, plantDef);
+
                 }
                 if (clone.status is CloneStatus.Breeding)
                 {
@@ -134,6 +161,10 @@ namespace PlantGenetics
                         Widgets.Label(actionRect,(clone.finishDays - GenDate.DaysPassed).ToStringDecimalIfSmall() +
                             " days left");
                     }
+
+                    var plantDef = BreedHelper.CreateThingDefFromCloneData(clone);
+                    plantDef.label = clone.newName;
+                    _ = Widgets.InfoCardButton(infoRect, plantDef);
                 }
 
                 if (clone.status is CloneStatus.Done)
@@ -141,6 +172,11 @@ namespace PlantGenetics
                     if (Widgets.ButtonText(actionRect, "Rename"))
                     {
                         Find.WindowStack.Add(new Dialog_GivePlantName(clone));
+                    }
+                    var plantDef = DefDatabase<ThingDef>.GetNamed(clone.defName, false);
+                    if (plantDef is not null && Widgets.InfoCardButton(infoRect, plantDef))
+                    {
+
                     }
                 }
 

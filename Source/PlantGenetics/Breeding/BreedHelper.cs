@@ -105,25 +105,37 @@ public static class BreedHelper
     }
     public static ThingDef AddBreedFromClone(CloneData cloneData)
     {
-        ThingDef template = DefDatabase<ThingDef>.GetNamed(cloneData.PlantDef);
-        cloneData.defName = cloneData.Trait.defName + "_" + template.defName;
+        var clone = CreateThingDefFromCloneData(cloneData);
+        cloneData.defName = clone.defName;
 
-        ThingDef clone = DefDatabase<ThingDef>.GetNamed(cloneData.defName, false);
+        HashSet<ushort> takenHashes = ShortHashGiver.takenHashesPerDeftype[typeof(ThingDef)];
+        ShortHashGiver.GiveShortHash(clone, typeof(ThingDef), takenHashes);
+
+        DefDatabase<ThingDef>.Add(clone);
+        clone.ResolveReferences();
+
+        return clone;
+    }
+
+    public static ThingDef CreateThingDefFromCloneData(CloneData cloneData)
+    {
+        ThingDef template = DefDatabase<ThingDef>.GetNamed(cloneData.PlantDef);
+        var defName = cloneData.Trait.defName + "_" + template.defName;
+
+        ThingDef clone = DefDatabase<ThingDef>.GetNamed(defName, false);
         if (clone != null)
         {
-            Log.Message("already exists in defdatabase: " + cloneData.defName);
+            Log.Message("already exists in defdatabase: " + defName);
             return clone;
         }
 
         clone = CreatePlantThingDefFromTempalte(template);
-        if (SowTagsResolverDictionary.TryGetValue(template.defName, out var sowTags))
-            clone.plant.sowTags = sowTags.ToList();
 
         // Other properties
-        clone.defName = cloneData.defName;
+        clone.defName = defName;
         clone.label = cloneData.newName;
         clone.shortHash = 0;
-        
+
         // modify Trait properties
         if (cloneData.Trait.associatedStats != null && cloneData.Trait.associatedStats.Count > 0)
         {
@@ -151,11 +163,6 @@ public static class BreedHelper
 
         ApplyTrait(cloneData, clone);
 
-        HashSet<ushort> takenHashes = ShortHashGiver.takenHashesPerDeftype[typeof(ThingDef)];
-        ShortHashGiver.GiveShortHash(clone, typeof(ThingDef), takenHashes);
-
-        DefDatabase<ThingDef>.Add(clone);
-        clone.ResolveReferences();
         return clone;
     }
     
