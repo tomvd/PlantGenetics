@@ -90,23 +90,86 @@ namespace PlantGenetics
             clone.finishDays = GenDate.DaysPassedFloat;
         }
 
+        private static void SoftRemove(CloneData cloneData)
+        {
+            cloneData.status = CloneStatus.Removed;
+        }
+
+        private void SoftRemove(ThingDef thing)
+        {
+            if (thing is not null && thing.plant is not null)
+            {
+                BreedHelper.SowTagsResolverDictionary.TryAdd(thing.defName, thing.plant.sowTags.ToArray());
+                thing.plant.sowTags = [];
+            }
+        }
+
+        private static void HardRemove(ThingDef thing)
+        {
+            if (thing != null)
+            {
+                DefDatabase<ThingDef>.Remove(thing);
+                thing.ResolveReferences();
+            }
+        }
+        private void HardRemove(CloneData cloneData)
+        {
+            this.Clones.Remove(cloneData);
+        }
+
+        public static bool IsExistGrowingZoneForClone(Map map, ThingDef thing)
+        {
+            return map.zoneManager.allZones.Any(zone => zone is Zone_Growing growingZone && growingZone.GetPlantDefToGrow().Equals(thing));
+        }
+        public static bool IsExistPlantOfCloneType(Map map, ThingDef thing)
+        {
+            return map.listerThings.AnyThingWithDef(thing);
+        }
+
         public void Remove(CloneData clone)
         {
-            if (clone.defName != null)
+            if (clone.defName is null)
             {
-                if (!Clones.Exists(x => x.PlantDef.Equals(clone.defName)))
-                {
-                    ThingDef thing = DefDatabase<ThingDef>.GetNamed(clone.defName, false);
-                    if (thing != null)
-                    {
-                        DefDatabase<ThingDef>.Remove(thing);
-                        thing.ResolveReferences();
-                    }
-                }
-
+                //No defName -> hard remove
+                this.HardRemove(clone);
+                return;
             }
 
-            clone.status = CloneStatus.Removed;
+            ThingDef thing = DefDatabase<ThingDef>.GetNamed(clone.defName, false);
+
+            if (Clones.Exists(x => x.PlantDef.Equals(clone.defName)))
+            {
+                //If exist reference to this clone -> soft remove
+                SoftRemove(clone);
+                SoftRemove(thing);
+                return;
+            }
+
+            if (thing is null)
+            {
+                //No thingDef exist -> hard remove
+                HardRemove(clone);
+                return;
+            }
+
+            var maps = world.worldObjects.Settlements
+                .Where(x => x.HasMap)
+                .Select(x => x.Map)
+                .ToList();
+
+            if (maps.Any(map => IsExistGrowingZoneForClone(map, thing) || IsExistPlantOfCloneType(map, thing)))
+            {
+                //thing exist on any map -> soft remove
+                SoftRemove(clone);
+                SoftRemove(thing);
+                return;
+            }
+            else
+            {
+                //thing doesn't exist -> hard remove
+                HardRemove(clone);
+                HardRemove(thing);
+            }
         }
 
         public void InitClones()

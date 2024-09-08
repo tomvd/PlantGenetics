@@ -11,6 +11,7 @@ namespace PlantGenetics;
 
 public static class BreedHelper
 {
+    public static readonly Dictionary<string, string[]> SowTagsResolverDictionary = [];
     public static string GetNameSuggestionFromCloneDataV1(CloneData cloneData)
     {
         return cloneData.Trait.LabelCap + " " + DefDatabase<ThingDef>.GetNamed(cloneData.PlantDef, true).LabelCap;
@@ -114,6 +115,8 @@ public static class BreedHelper
         }
 
         clone = CreatePlantThingDefFromTempalte(template);
+        if (SowTagsResolverDictionary.TryGetValue(template.defName, out var sowTags))
+            clone.plant.sowTags = sowTags.ToList();
 
         // Other properties
         clone.defName = cloneData.defName;
