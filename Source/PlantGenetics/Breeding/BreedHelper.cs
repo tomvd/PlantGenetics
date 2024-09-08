@@ -47,64 +47,25 @@ public static class BreedHelper
         return $"{thingDef.LabelCap}-GEN{traits.Count:000} {traitsWithCountString}";
     }
 
-    public static ThingDef AddBreedFromClone(CloneData cloneData)
+    private static ThingDef CreatePlantThingDefFromTempalte(ThingDef template)
     {
-        ThingDef template = DefDatabase<ThingDef>.GetNamed(cloneData.PlantDef);
-        string cloneDefName = cloneData.Trait.defName +"_"+ template.defName;
-        cloneData.defName = cloneDefName;
-        if (DefDatabase<ThingDef>.GetNamed(cloneDefName, false) != null)
-        {
-            Log.Message("already exists in defdatabase: " + cloneDefName);
-            return DefDatabase<ThingDef>.GetNamed(cloneDefName, false);
-        }
-        string cloneName = cloneData.newName;
-        ThingDef clone = new ThingDef();
-        var fields = typeof(ThingDef).GetFields(BindingFlags.Public | BindingFlags.Instance);
-                
+        ThingDef thing = new ThingDef();
         // Copy fields
-        foreach (var field in fields)
+        foreach (FieldInfo fieldInfo in typeof(ThingDef).GetFields(BindingFlags.Instance | BindingFlags.Public))
         {
-            //if (field.Name == "designationCategory") continue;
-            field.SetValue(clone, field.GetValue(template));
+            fieldInfo.SetValue(thing, fieldInfo.GetValue(template));
         }
-
-        CopyComps(clone, template);
-
-        // Other properties
-        clone.defName = cloneDefName;
-        clone.label = cloneName;
-        clone.shortHash = 0;
-        
-        // modify Trait properties
-        if (cloneData.Trait.associatedStats != null && cloneData.Trait.associatedStats.Count > 0)
+        CopyComps(thing, template);
+        thing.plant = new PlantProperties();
+        foreach (FieldInfo fieldInfo2 in typeof(PlantProperties).GetFields(BindingFlags.Instance | BindingFlags.Public))
         {
-            clone.statBases = new List<StatModifier>(); // otherwise it seems to overwrite stats of the template?
-            foreach (var templateStatBase in template.statBases)
-            {
-                StatModifier statModifier = new StatModifier();
-                statModifier.stat = templateStatBase.stat;
-                statModifier.value = templateStatBase.value;
-                clone.statBases.Add(statModifier);
-            }
-            Log.Message("checking mutation stats");
-            for (int i = 0; i < clone.statBases.Count; i++)
-            {
-                if (cloneData.Trait.associatedStats.Contains(clone.statBases[i].stat))
-                {
-                    Log.Message("changing stat " + clone.statBases[i]);
-                    clone.statBases[i].value *= cloneData.Trait.statmultiplier;
-                    Log.Message("changed stat " + clone.statBases[i]);
-                }
-            }
+            fieldInfo2.SetValue(thing.plant, fieldInfo2.GetValue(template.plant));
         }
+        return thing;
+    }
 
-        clone.plant = new PlantProperties();
-        var fieldsComp = typeof(PlantProperties).GetFields(BindingFlags.Public | BindingFlags.Instance);
-        foreach (var field in fieldsComp)
-        {
-            field.SetValue(clone.plant, field.GetValue(template.plant));
-        }
-
+    private static void ApplyTrait(CloneData cloneData, ThingDef clone)
+    {
         if (cloneData.Trait.associatedPlantProperty != null)
         {
             switch (cloneData.Trait.associatedPlantProperty)
@@ -139,6 +100,52 @@ public static class BreedHelper
                 clone.plant.sowTags.Add("VCE_Sandy");
             }*/
         }
+    }
+    public static ThingDef AddBreedFromClone(CloneData cloneData)
+    {
+        ThingDef template = DefDatabase<ThingDef>.GetNamed(cloneData.PlantDef);
+        cloneData.defName = cloneData.Trait.defName + "_" + template.defName;
+
+        ThingDef clone = DefDatabase<ThingDef>.GetNamed(cloneData.defName, false);
+        if (clone != null)
+        {
+            Log.Message("already exists in defdatabase: " + cloneData.defName);
+            return clone;
+        }
+
+        clone = CreatePlantThingDefFromTempalte(template);
+
+        // Other properties
+        clone.defName = cloneData.defName;
+        clone.label = cloneData.newName;
+        clone.shortHash = 0;
+        
+        // modify Trait properties
+        if (cloneData.Trait.associatedStats != null && cloneData.Trait.associatedStats.Count > 0)
+        {
+            clone.statBases = new List<StatModifier>(); // otherwise it seems to overwrite stats of the template?
+            foreach (var templateStatBase in template.statBases)
+            {
+                StatModifier statModifier = new()
+                {
+                    stat = templateStatBase.stat,
+                    value = templateStatBase.value
+                };
+                clone.statBases.Add(statModifier);
+            }
+            Log.Message("checking mutation stats");
+            foreach (var statMod in clone.statBases)
+            {
+                if (cloneData.Trait.associatedStats.Contains(statMod.stat))
+                {
+                    Log.Message("changing stat " + statMod);
+                    statMod.value *= cloneData.Trait.statmultiplier;
+                    Log.Message("changed stat " + statMod);
+                }
+            }
+        }
+
+        ApplyTrait(cloneData, clone);
 
         HashSet<ushort> takenHashes = ShortHashGiver.takenHashesPerDeftype[typeof(ThingDef)];
         ShortHashGiver.GiveShortHash(clone, typeof(ThingDef), takenHashes);
