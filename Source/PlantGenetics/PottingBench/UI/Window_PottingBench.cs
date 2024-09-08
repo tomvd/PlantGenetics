@@ -69,6 +69,7 @@ namespace PlantGenetics
         private void OnBreedKeyPressed(CloneData clone)
         {
             //SoundDefOf.Interact_Sow.PlayOneShotOnCamera();
+            clone.newName = BreedHelper.GetNameSuggestionFromCloneDataV2(clone, _pottingService.Clones);
             Find.WindowStack.Add(new Dialog_GivePlantName(clone));
             _pottingService.Breed(clone);
         }

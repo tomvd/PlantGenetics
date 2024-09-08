@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using System.Xml;
 using PlantGenetics.Gens;
@@ -10,6 +11,42 @@ namespace PlantGenetics;
 
 public static class BreedHelper
 {
+    public static string GetNameSuggestionFromCloneDataV1(CloneData cloneData)
+    {
+        return cloneData.Trait.LabelCap + " " + DefDatabase<ThingDef>.GetNamed(cloneData.PlantDef, true).LabelCap;
+    }
+    public static string GetNameSuggestionFromCloneDataV2(CloneData cloneData, List<CloneData> allClones)
+    {
+        Dictionary<string, CloneData> clonesDict = allClones
+            .Where(x => x.defName != null)
+            .ToDictionary(x => x.defName, x => x);
+
+        Dictionary<string, int> traits = [];
+        ThingDef thingDef = null;
+        CloneData current = cloneData;
+        while (current != null)
+        {
+            if (!traits.TryAdd(current.Trait.LabelCap, 1))
+            {
+                traits[current.Trait.LabelCap]+=1;
+            }
+            string plantDef = current.PlantDef;
+            if (!clonesDict.TryGetValue(plantDef, out current))
+            {
+                thingDef = DefDatabase<ThingDef>.GetNamed(plantDef, false);
+                if (thingDef is null)
+                {
+                    return GetNameSuggestionFromCloneDataV1(cloneData);
+                }
+            }
+        }
+        var traitsWithCount = traits
+            .OrderBy(x => x.Key)
+            .Select(x => $"{x.Key.Substring(0, 4)}-{x.Value}");
+        string traitsWithCountString = string.Join(" ", traitsWithCount);
+        return $"{thingDef.LabelCap}-GEN{traits.Count:000} {traitsWithCountString}";
+    }
+
     public static ThingDef AddBreedFromClone(CloneData cloneData)
     {
         ThingDef template = DefDatabase<ThingDef>.GetNamed(cloneData.PlantDef);
