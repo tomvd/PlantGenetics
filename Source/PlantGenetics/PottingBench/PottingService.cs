@@ -6,6 +6,7 @@ using RimWorld;
 using RimWorld.Planet;
 using UnityEngine;
 using Verse;
+using static UnityEngine.UIElements.UxmlAttributeDescription;
 
 namespace PlantGenetics
 {
@@ -172,8 +173,87 @@ namespace PlantGenetics
             }
         }
 
+        private void ResolveDuplicates()
+        {
+            var duplicates = Clones
+                .Where(x => x.defName is not null)
+                .GroupBy(x => x.defName)
+                .Where(x => x.Count() > 1)
+                .Select(x => (defName: x.Key, records: x.ToList()))
+                .ToList();
+
+            foreach (var duplicate in duplicates)
+            {
+
+                Log.Warning("2 or more plants with same defName:");
+                foreach (var clone in duplicate.records)
+                    Log.Message($"--{clone.newName}");
+
+                var statusLookup = duplicate.records.ToLookup(x => x.status);
+
+                //They must not have def name
+                foreach (var clone in statusLookup[null])
+                    clone.defName = null;
+                foreach (var clone in statusLookup[CloneStatus.Breeding])
+                    clone.defName = null;
+
+                CloneData used = null;
+
+                var doneCount = statusLookup[CloneStatus.Done].Count();
+
+                if (doneCount >= 2)
+                {
+                    Log.Error("More than 2 plants with same defName and done status:");
+
+                    foreach (var record in statusLookup[CloneStatus.Done])
+                        Log.Error($"--{record.newName}");
+
+                    used = statusLookup[CloneStatus.Done].OrderBy(x => x.finishDays).LastOrDefault();
+
+                    if (used != null)
+                        Log.Message($"Used: {used.newName}");
+
+                }
+                else if (doneCount == 1)
+                {
+                    used = statusLookup[CloneStatus.Done].OrderBy(x => x.finishDays).LastOrDefault();
+                    if (used != null)
+                        Log.Message($"Used: {used.newName}");
+                }
+                else
+                {
+                    var removedCount = statusLookup[CloneStatus.Removed].Count();
+
+                    if (removedCount >= 2)
+                    {
+                        Log.Error("More than 2 plants with same defName and removed status:");
+
+                        foreach (var record in statusLookup[CloneStatus.Removed])
+                            Log.Error($"--{record.newName}");
+
+                        used = statusLookup[CloneStatus.Removed].OrderBy(x => x.finishDays).LastOrDefault();
+
+                        if (used != null)
+                            Log.Message($"Used: {used.newName}");
+                    }
+                    else
+                    {
+                        used = statusLookup[CloneStatus.Removed].OrderBy(x => x.finishDays).LastOrDefault();
+                        if (used != null)
+                            Log.Message($"Used: {used.newName}");
+                    }
+                }
+
+                foreach (var clone in statusLookup[CloneStatus.Done].Concat(statusLookup[CloneStatus.Removed]).Except([used]))
+                {
+                    Clones.Remove(clone);
+                }
+            }
+        }
         public void InitClones()
         {
+            ResolveDuplicates();
+
             //Log.Message("Adding already discovered breed: " + Clones.Count);
             foreach (var clone in Clones.Where(data => data.defName != null).ToList())
             {
@@ -182,8 +262,8 @@ namespace PlantGenetics
             }
             foreach (var clone in Clones.Where(data => data.status is CloneStatus.Removed).ToList())
             {
+                Log.Message("Hide removed breed: " + clone.newName ?? clone.defName ?? $"sample of {clone.PlantDef} with trait {clone.Trait.label}");
                 Remove(clone);
-                Log.Message("Hide removed breed: " + clone.newName);
             }
             ResourceCounter.ResetDefs();
         }

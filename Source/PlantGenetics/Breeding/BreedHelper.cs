@@ -105,30 +105,37 @@ public static class BreedHelper
     }
     public static ThingDef AddBreedFromClone(CloneData cloneData)
     {
-        var clone = CreateThingDefFromCloneData(cloneData);
+
+        var clone = CreateThingDefFromCloneData(cloneData, out var alreadyExist);
         cloneData.defName = clone.defName;
 
-        HashSet<ushort> takenHashes = ShortHashGiver.takenHashesPerDeftype[typeof(ThingDef)];
-        ShortHashGiver.GiveShortHash(clone, typeof(ThingDef), takenHashes);
+        if (!alreadyExist)
+        {
+            HashSet<ushort> takenHashes = ShortHashGiver.takenHashesPerDeftype[typeof(ThingDef)];
+            ShortHashGiver.GiveShortHash(clone, typeof(ThingDef), takenHashes);
 
-        DefDatabase<ThingDef>.Add(clone);
-        clone.ResolveReferences();
+            DefDatabase<ThingDef>.Add(clone);
+            clone.ResolveReferences();
+        }
 
         return clone;
     }
 
     public static ThingDef CreateThingDefFromCloneData(CloneData cloneData)
+        => CreateThingDefFromCloneData(cloneData, out _);
+    public static ThingDef CreateThingDefFromCloneData(CloneData cloneData, out bool isAlreadyExist)
     {
-        ThingDef template = DefDatabase<ThingDef>.GetNamed(cloneData.PlantDef);
-        var defName = cloneData.Trait.defName + "_" + template.defName;
-
+        var defName = cloneData.Trait.defName + "_" + cloneData.PlantDef;
         ThingDef clone = DefDatabase<ThingDef>.GetNamed(defName, false);
         if (clone != null)
         {
             Log.Message("already exists in defdatabase: " + defName);
+            isAlreadyExist = true;
             return clone;
         }
+        isAlreadyExist = false;
 
+        ThingDef template = DefDatabase<ThingDef>.GetNamed(cloneData.PlantDef);
         clone = CreatePlantThingDefFromTempalte(template);
 
         // Other properties
@@ -149,14 +156,14 @@ public static class BreedHelper
                 };
                 clone.statBases.Add(statModifier);
             }
-            Log.Message("checking mutation stats");
+            //Log.Message("checking mutation stats", );
             foreach (var statMod in clone.statBases)
             {
                 if (cloneData.Trait.associatedStats.Contains(statMod.stat))
                 {
-                    Log.Message("changing stat " + statMod);
+                    //Log.Message("changing stat " + statMod);
                     statMod.value *= cloneData.Trait.statmultiplier;
-                    Log.Message("changed stat " + statMod);
+                    //Log.Message("changed stat " + statMod);
                 }
             }
         }
