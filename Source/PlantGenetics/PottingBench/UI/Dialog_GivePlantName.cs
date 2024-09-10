@@ -35,7 +35,7 @@ public class Dialog_GivePlantName : Window
 		}
 		else
 		{
-			curName = plant.Trait.LabelCap + " " + DefDatabase<ThingDef>.GetNamed(plant.PlantDef).LabelCap;
+			curName = BreedHelper.GetNameSuggestionFromCloneDataV1(plant);
 		}
 	}
 

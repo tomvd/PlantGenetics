@@ -4,6 +4,13 @@ using Verse;
 
 namespace PlantGenetics;
 
+public static class CloneStatus
+{
+    public const string Breeding = "breeding";
+    public const string Done = "done";
+    public const string Removed = "removed";
+}
+
 public class CloneData : IExposable
 {
     public CloneData(Plant plant)
@@ -25,12 +32,27 @@ public class CloneData : IExposable
     public CloneData()
     {
     }
-    
+
+    /// <summary>
+    /// DefName of parent plant
+    /// </summary>
     public string PlantDef;
     public TraitDef Trait;
-    public string status; // null, breeding, done or removed
+    /// <summary>
+    /// null or <see cref="CloneStatus"/>
+    /// </summary>
+    public string status;
+    /// <summary>
+    /// When the clone will be or was made
+    /// </summary>
     public float finishDays;
+    /// <summary>
+    /// Clone name for game
+    /// </summary>
     public string newName;
+    /// <summary>
+    /// Unique DefName for clone
+    /// </summary>
     public string defName;
 
     public void ExposeData()

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using System.Xml;
 using PlantGenetics.Gens;
@@ -10,64 +11,63 @@ namespace PlantGenetics;
 
 public static class BreedHelper
 {
-    public static ThingDef AddBreedFromClone(CloneData cloneData)
+    public static readonly Dictionary<string, string[]> SowTagsResolverDictionary = [];
+    public static string GetNameSuggestionFromCloneDataV1(CloneData cloneData)
     {
-        ThingDef template = DefDatabase<ThingDef>.GetNamed(cloneData.PlantDef);
-        string cloneDefName = cloneData.Trait.defName +"_"+ template.defName;
-        cloneData.defName = cloneDefName;
-        if (DefDatabase<ThingDef>.GetNamed(cloneDefName, false) != null)
-        {
-            Log.Message("already exists in defdatabase: " + cloneDefName);
-            return DefDatabase<ThingDef>.GetNamed(cloneDefName, false);
-        }
-        string cloneName = cloneData.newName;
-        ThingDef clone = new ThingDef();
-        var fields = typeof(ThingDef).GetFields(BindingFlags.Public | BindingFlags.Instance);
-                
-        // Copy fields
-        foreach (var field in fields)
-        {
-            //if (field.Name == "designationCategory") continue;
-            field.SetValue(clone, field.GetValue(template));
-        }
+        return cloneData.Trait.LabelCap + " " + DefDatabase<ThingDef>.GetNamed(cloneData.PlantDef, true).LabelCap;
+    }
+    public static string GetNameSuggestionFromCloneDataV2(CloneData cloneData, List<CloneData> allClones)
+    {
+        Dictionary<string, CloneData> clonesDict = allClones
+            .Where(x => x.defName != null)
+            .ToDictionary(x => x.defName, x => x);
 
-        CopyComps(clone, template);
-
-        // Other properties
-        clone.defName = cloneDefName;
-        clone.label = cloneName;
-        clone.shortHash = 0;
-        
-        // modify Trait properties
-        if (cloneData.Trait.associatedStats != null && cloneData.Trait.associatedStats.Count > 0)
+        Dictionary<string, int> traits = [];
+        ThingDef thingDef = null;
+        CloneData current = cloneData;
+        while (current != null)
         {
-            clone.statBases = new List<StatModifier>(); // otherwise it seems to overwrite stats of the template?
-            foreach (var templateStatBase in template.statBases)
+            if (!traits.TryAdd(current.Trait.LabelCap, 1))
             {
-                StatModifier statModifier = new StatModifier();
-                statModifier.stat = templateStatBase.stat;
-                statModifier.value = templateStatBase.value;
-                clone.statBases.Add(statModifier);
+                traits[current.Trait.LabelCap]+=1;
             }
-            Log.Message("checking mutation stats");
-            for (int i = 0; i < clone.statBases.Count; i++)
+            string plantDef = current.PlantDef;
+            if (!clonesDict.TryGetValue(plantDef, out current))
             {
-                if (cloneData.Trait.associatedStats.Contains(clone.statBases[i].stat))
+                thingDef = DefDatabase<ThingDef>.GetNamed(plantDef, false);
+                if (thingDef is null)
                 {
-                    Log.Message("changing stat " + clone.statBases[i]);
-                    clone.statBases[i].value *= cloneData.Trait.statmultiplier;
-                    Log.Message("changed stat " + clone.statBases[i]);
+                    return GetNameSuggestionFromCloneDataV1(cloneData);
                 }
             }
         }
+        var traitsWithCount = traits
+            .OrderBy(x => x.Key)
+            .Select(x => $"{x.Key.Substring(0, 4)}-{x.Value}");
+        string traitsWithCountString = string.Join(" ", traitsWithCount);
+        int traitSum = traits.Sum(x => x.Value);
+        return $"{thingDef.LabelCap}-GEN{traitSum:000} {traitsWithCountString}";
+    }
 
-        clone.plant = new PlantProperties();
-        var fieldsComp = typeof(PlantProperties).GetFields(BindingFlags.Public | BindingFlags.Instance);
-        foreach (var field in fieldsComp)
+    private static ThingDef CreatePlantThingDefFromTempalte(ThingDef template)
+    {
+        ThingDef thing = new ThingDef();
+        // Copy fields
+        foreach (FieldInfo fieldInfo in typeof(ThingDef).GetFields(BindingFlags.Instance | BindingFlags.Public))
         {
-            field.SetValue(clone.plant, field.GetValue(template.plant));
+            fieldInfo.SetValue(thing, fieldInfo.GetValue(template));
         }
+        CopyComps(thing, template);
+        thing.plant = new PlantProperties();
+        foreach (FieldInfo fieldInfo2 in typeof(PlantProperties).GetFields(BindingFlags.Instance | BindingFlags.Public))
+        {
+            fieldInfo2.SetValue(thing.plant, fieldInfo2.GetValue(template.plant));
+        }
+        return thing;
+    }
 
+    private static void ApplyTrait(CloneData cloneData, ThingDef clone)
+    {
         if (cloneData.Trait.associatedPlantProperty != null)
         {
             switch (cloneData.Trait.associatedPlantProperty)
@@ -102,12 +102,74 @@ public static class BreedHelper
                 clone.plant.sowTags.Add("VCE_Sandy");
             }*/
         }
+    }
+    public static ThingDef AddBreedFromClone(CloneData cloneData)
+    {
 
-        HashSet<ushort> takenHashes = ShortHashGiver.takenHashesPerDeftype[typeof(ThingDef)];
-        typeof(ShortHashGiver).GetMethod("GiveShortHash", BindingFlags.NonPublic|BindingFlags.Static).Invoke(null, new object[] {clone, typeof(ThingDef), takenHashes});
+        var clone = CreateThingDefFromCloneData(cloneData, out var alreadyExist);
+        cloneData.defName = clone.defName;
 
-        DefDatabase<ThingDef>.Add(clone);
-        clone.ResolveReferences();
+        if (!alreadyExist)
+        {
+            HashSet<ushort> takenHashes = ShortHashGiver.takenHashesPerDeftype[typeof(ThingDef)];
+            ShortHashGiver.GiveShortHash(clone, typeof(ThingDef), takenHashes);
+
+            DefDatabase<ThingDef>.Add(clone);
+            clone.ResolveReferences();
+        }
+
+        return clone;
+    }
+
+    public static ThingDef CreateThingDefFromCloneData(CloneData cloneData)
+        => CreateThingDefFromCloneData(cloneData, out _);
+    public static ThingDef CreateThingDefFromCloneData(CloneData cloneData, out bool isAlreadyExist)
+    {
+        var defName = cloneData.Trait.defName + "_" + cloneData.PlantDef;
+        ThingDef clone = DefDatabase<ThingDef>.GetNamed(defName, false);
+        if (clone != null)
+        {
+            Log.Message("already exists in defdatabase: " + defName);
+            isAlreadyExist = true;
+            return clone;
+        }
+        isAlreadyExist = false;
+
+        ThingDef template = DefDatabase<ThingDef>.GetNamed(cloneData.PlantDef);
+        clone = CreatePlantThingDefFromTempalte(template);
+
+        // Other properties
+        clone.defName = defName;
+        clone.label = cloneData.newName;
+        clone.shortHash = 0;
+
+        // modify Trait properties
+        if (cloneData.Trait.associatedStats != null && cloneData.Trait.associatedStats.Count > 0)
+        {
+            clone.statBases = new List<StatModifier>(); // otherwise it seems to overwrite stats of the template?
+            foreach (var templateStatBase in template.statBases)
+            {
+                StatModifier statModifier = new()
+                {
+                    stat = templateStatBase.stat,
+                    value = templateStatBase.value
+                };
+                clone.statBases.Add(statModifier);
+            }
+            //Log.Message("checking mutation stats", );
+            foreach (var statMod in clone.statBases)
+            {
+                if (cloneData.Trait.associatedStats.Contains(statMod.stat))
+                {
+                    //Log.Message("changing stat " + statMod);
+                    statMod.value *= cloneData.Trait.statmultiplier;
+                    //Log.Message("changed stat " + statMod);
+                }
+            }
+        }
+
+        ApplyTrait(cloneData, clone);
+
         return clone;
     }
     
