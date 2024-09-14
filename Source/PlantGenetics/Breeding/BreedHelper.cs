@@ -16,6 +16,9 @@ public static class BreedHelper
     {
         return cloneData.Trait.LabelCap + " " + DefDatabase<ThingDef>.GetNamed(cloneData.PlantDef, true).LabelCap;
     }
+
+    public delegate string GetNameSuggestionFromCloneDataDelegate(CloneData cloneData, List<CloneData> allClones);
+    public static GetNameSuggestionFromCloneDataDelegate GetNameSuggestionFromCloneDataGeneral = GetNameSuggestionFromCloneDataV3;
     public static string GetNameSuggestionFromCloneDataV2(CloneData cloneData, List<CloneData> allClones)
     {
         Dictionary<string, CloneData> clonesDict = allClones
@@ -47,6 +50,39 @@ public static class BreedHelper
         string traitsWithCountString = string.Join(" ", traitsWithCount);
         int traitSum = traits.Sum(x => x.Value);
         return $"{thingDef.LabelCap}-GEN{traitSum:000} {traitsWithCountString}";
+    }
+    public static string GetNameSuggestionFromCloneDataV3(CloneData cloneData, List<CloneData> allClones)
+    {
+        Dictionary<string, CloneData> clonesDict = allClones
+            .Where(x => x.defName != null)
+            .ToDictionary(x => x.defName, x => x);
+
+        Dictionary<string, int> traits = [];
+        ThingDef thingDef = null;
+        CloneData current = cloneData;
+        while (current != null)
+        {
+            if (!traits.TryAdd(current.Trait.LabelCap, 1))
+            {
+                traits[current.Trait.LabelCap] += 1;
+            }
+            string plantDef = current.PlantDef;
+            if (!clonesDict.TryGetValue(plantDef, out current))
+            {
+                thingDef = DefDatabase<ThingDef>.GetNamed(plantDef, false);
+                if (thingDef is null)
+                {
+                    return GetNameSuggestionFromCloneDataV1(cloneData);
+                }
+            }
+        }
+        var traitsWithCount = traits
+            .OrderBy(x => x.Key)
+            .Select(x => (Key: x.Key.Substring(0, 4), x.Value))
+            .Select(x => x.Value == 1 ? x.Key : $"{x.Key}{x.Value}");
+        string traitsWithCountString = string.Join(" ", traitsWithCount);
+        int traitSum = traits.Sum(x => x.Value);
+        return $"{thingDef.LabelCap} G{traitSum:0} {traitsWithCountString}";
     }
 
     private static ThingDef CreatePlantThingDefFromTempalte(ThingDef template)
