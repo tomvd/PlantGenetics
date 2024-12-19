@@ -50,6 +50,13 @@
         <commonality>0.01</commonality>
         <statmultiplier>5.9</statmultiplier>
         <associatedPlantProperty>glow</associatedPlantProperty>
+    </PlantGenetics.TraitDef>
+    <PlantGenetics.TraitDef>
+        <defName>Thriving</defName>
+        <label>thriving</label>
+        <commonality>0.01</commonality>
+        <statmultiplier>1.3</statmultiplier>
+        <associatedPlantProperty>fertilityMin</associatedPlantProperty>
     </PlantGenetics.TraitDef>    
 </Defs>
 <!--
