@@ -5,6 +5,7 @@ using System.Reflection;
 using System.Xml;
 using PlantGenetics.Gens;
 using RimWorld;
+using UnityEngine;
 using Verse;
 
 namespace PlantGenetics;
@@ -85,7 +86,7 @@ public static class BreedHelper
         return $"{thingDef.LabelCap} G{traitSum:0} {traitsWithCountString}";
     }
 
-    private static ThingDef CreatePlantThingDefFromTempalte(ThingDef template)
+    private static ThingDef CreatePlantThingDefFromTemplate(ThingDef template)
     {
         ThingDef thing = new ThingDef();
         // Copy fields
@@ -99,6 +100,7 @@ public static class BreedHelper
         {
             fieldInfo2.SetValue(thing.plant, fieldInfo2.GetValue(template.plant));
         }
+        thing.plant.sowTags = new List<string>(template.plant.sowTags);
         return thing;
     }
 
@@ -113,6 +115,12 @@ public static class BreedHelper
                     break;
                 case "growDays":
                     clone.plant.growDays *= cloneData.Trait.statmultiplier;
+                    break;
+                case "glow":
+                    var glower = new CompProperties_Glower();
+                    glower.glowRadius = cloneData.Trait.statmultiplier;
+                    glower.glowColor = new ColorInt(10, 50, 64, 0);
+                    clone.comps.Add(glower);
                     break;
                 case "fertilityMin":
                     clone.plant.fertilityMin *= cloneData.Trait.statmultiplier;
@@ -172,7 +180,7 @@ public static class BreedHelper
         isAlreadyExist = false;
 
         ThingDef template = DefDatabase<ThingDef>.GetNamed(cloneData.PlantDef);
-        clone = CreatePlantThingDefFromTempalte(template);
+        clone = CreatePlantThingDefFromTemplate(template);
 
         // Other properties
         clone.defName = defName;

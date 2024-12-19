@@ -44,6 +44,13 @@
         <commonality>0.01</commonality>
         <special>true</special>
     </PlantGenetics.TraitDef>
+    <PlantGenetics.TraitDef>
+        <defName>Glowing</defName>
+        <label>glowing</label>
+        <commonality>0.01</commonality>
+        <statmultiplier>5.9</statmultiplier>
+        <associatedPlantProperty>glow</associatedPlantProperty>
+    </PlantGenetics.TraitDef>    
 </Defs>
 <!--
 
