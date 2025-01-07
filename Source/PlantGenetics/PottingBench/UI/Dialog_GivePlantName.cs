@@ -49,7 +49,7 @@ public class Dialog_GivePlantName : Window
 			Event.current.Use();
 		}
 		Rect rect2;
-		Widgets.Label(new Rect(0f, 0f, rect.width, rect.height), "give name for new plant".CapitalizeFirst());
+		Widgets.Label(new Rect(0f, 0f, rect.width, rect.height), "GiveNameForNewPlant".Translate());
 		/*if (nameGenerator != null && Widgets.ButtonText(new Rect(rect.width / 2f + 90f, 80f, rect.width / 2f - 90f, 35f), "Randomize".Translate()))
 		{
 			curName = nameGenerator();

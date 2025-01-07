@@ -93,20 +93,20 @@ namespace PlantGenetics
 
             Text.Anchor = TextAnchor.MiddleLeft;
             Text.Font = GameFont.Tiny;
-            Widgets.Label(nameRect, "plant");
+            Widgets.Label(nameRect, "ColumnPlant".Translate());
 
             var traitRect = NewRect(nameRect, 10, 120);
 
             Text.Anchor = TextAnchor.MiddleCenter;
-            Widgets.Label(traitRect, "trait");
+            Widgets.Label(traitRect, "ColumnTrait".Translate());
 
             var actionRect = NewRect(traitRect, 10, 120);
 
-            Widgets.Label(actionRect, "action");
+            Widgets.Label(actionRect, "ColumnAction".Translate());
 
             var removeRect = NewRect(actionRect, 10, 120);
 
-            Widgets.Label(removeRect, "remove");
+            Widgets.Label(removeRect, "ColumnRemove".Translate());
 
             var totalWidth = removeRect.width + removeRect.x - baseRect.x;
 
@@ -140,7 +140,7 @@ namespace PlantGenetics
 
                 if (clone.status == null) {
 
-                    if (Widgets.ButtonText(actionRect, "Breed")) {
+                    if (Widgets.ButtonText(actionRect, "ButtonBreed".Translate())) {
                         OnBreedKeyPressed(clone);
                     }
 
@@ -158,8 +158,7 @@ namespace PlantGenetics
                     }
                     else
                     {
-                        Widgets.Label(actionRect,(clone.finishDays - GenDate.DaysPassed).ToStringDecimalIfSmall() +
-                            " days left");
+                        Widgets.Label(actionRect,"DaysLeft".Translate((clone.finishDays - GenDate.DaysPassed).ToStringDecimalIfSmall()));
                     }
 
                     var plantDef = BreedHelper.CreateThingDefFromCloneData(clone);
@@ -169,7 +168,7 @@ namespace PlantGenetics
 
                 if (clone.status is CloneStatus.Done)
                 {
-                    if (Widgets.ButtonText(actionRect, "Rename"))
+                    if (Widgets.ButtonText(actionRect, "ButtonRename".Translate()))
                     {
                         Find.WindowStack.Add(new Dialog_GivePlantName(clone));
                     }
@@ -180,7 +179,7 @@ namespace PlantGenetics
                     }
                 }
 
-                if (Widgets.ButtonText(removeRect, "Remove"))
+                if (Widgets.ButtonText(removeRect, "ButtonRemove".Translate()))
                 {
                     string warning = "";
                     if (clone.defName != null)
@@ -190,16 +189,16 @@ namespace PlantGenetics
                         {
                             if (PottingService.IsExistGrowingZoneForClone(map, named))
                             {
-                                warning = "There is a growth zone for this plant. ";
+                                warning = "WarningGrowthZone".Translate() + " ";
                             }
                             else if (PottingService.IsExistPlantOfCloneType(map, named))
                             {
-                                warning = "Plants of this type still exist. ";
+                                warning = "WarningStillExists".Translate() + " ";
                             }
                         }
                     }
                     Find.WindowStack.Add(Dialog_MessageBox.CreateConfirmation(
-                        warning + "You are sure about to remove " + clone.newName + "?", 
+                        warning + "AboutToRemove".Translate(clone.newName), 
                         () => _pottingService.Remove(clone), 
                         true, 
                         "AreYouSure".Translate(), 

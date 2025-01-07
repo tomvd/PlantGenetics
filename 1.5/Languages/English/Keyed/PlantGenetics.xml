@@ -3,6 +3,17 @@
 
     <DesignatorClonePlant>Clone plant</DesignatorClonePlant>
     <DesignatorClonePlantDesc>Clone this plant while keeping its DNA so it can be replanted somewhere else.</DesignatorClonePlantDesc>
-    <PlantWillDieIn>Plant will die in {time} unless replanted.</PlantWillDieIn>
-    
+    <ClippingSuccess>Successfully added a clipping to the potting bench.</ClippingSuccess>
+    <ColumnPlant>plant</ColumnPlant>
+    <ColumnTrait>trait</ColumnTrait>
+    <ColumnAction>action</ColumnAction>
+    <ColumnRemove>remove</ColumnRemove>
+    <ButtonBreed>Breed</ButtonBreed>
+    <ButtonRename>Rename</ButtonRename>
+    <ButtonRemove>Remove</ButtonRemove>
+    <GiveNameForNewPlant>Give name for new plant</GiveNameForNewPlant>
+    <DaysLeft>{0} days left</DaysLeft>
+    <WarningGrowthZone>There is a growth zone for this plant.</WarningGrowthZone>
+    <WarningStillExists>Plants of this type still exist.</WarningStillExists>
+    <AboutToRemove>"You are about to remove {0}!"</AboutToRemove>
 </LanguageData>

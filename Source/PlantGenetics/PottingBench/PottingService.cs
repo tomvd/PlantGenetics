@@ -41,7 +41,7 @@ namespace PlantGenetics
         public bool AddClone(Plant plant, Building bench)
         {
             pottingBench = bench;
-            Messages.Message("Successfully added a clipping to the potting bench.", MessageTypeDefOf.NeutralEvent);
+            Messages.Message("ClippingSuccess".Translate(), MessageTypeDefOf.NeutralEvent);
             _clones.Add(new CloneData(plant));
             return true;
         }
