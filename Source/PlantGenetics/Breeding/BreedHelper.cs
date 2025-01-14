@@ -47,11 +47,18 @@ public static class BreedHelper
         }
         var traitsWithCount = traits
             .OrderBy(x => x.Key)
-            .Select(x => $"{x.Key.Substring(0, 4)}-{x.Value}");
+            .Select(x => $"{FirstCharacters(x.Key, 4)}-{x.Value}");
         string traitsWithCountString = string.Join(" ", traitsWithCount);
         int traitSum = traits.Sum(x => x.Value);
         return $"{thingDef.LabelCap}-GEN{traitSum:000} {traitsWithCountString}";
     }
+
+    private static string FirstCharacters(string str, int count)
+    {
+        if (str.Length <= count) return str;
+        return str.Substring(0, count);
+    }
+    
     public static string GetNameSuggestionFromCloneDataV3(CloneData cloneData, List<CloneData> allClones)
     {
         Dictionary<string, CloneData> clonesDict = allClones
@@ -79,7 +86,7 @@ public static class BreedHelper
         }
         var traitsWithCount = traits
             .OrderBy(x => x.Key)
-            .Select(x => (Key: x.Key.Substring(0, 4), x.Value))
+            .Select(x => (Key: FirstCharacters(x.Key, 4), x.Value))
             .Select(x => x.Value == 1 ? x.Key : $"{x.Key}{x.Value}");
         string traitsWithCountString = string.Join(" ", traitsWithCount);
         int traitSum = traits.Sum(x => x.Value);
