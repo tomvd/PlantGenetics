@@ -13,7 +13,6 @@
         "packagesPath": "C:\\Users\\tomvd\\.nuget\\packages\\",
         "outputPath": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\Mods\\PlantGenetics\\Source\\PlantGenetics\\obj\\",
         "projectStyle": "PackageReference",
-        "UsingMicrosoftNETSdk": false,
         "configFilePaths": [
           "C:\\Users\\tomvd\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
@@ -54,7 +53,7 @@
             },
             "Krafs.Rimworld.Ref": {
               "target": "Package",
-              "version": "[1.5.4146-beta, )",
+              "version": "[1.6.4489-beta, )",
               "generatePathProperty": true
             },
             "Lib.Harmony": {

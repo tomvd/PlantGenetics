@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <PlantGenetics.TraitDef>
+        <defName>Beautiful</defName>
+        <label>beautiful</label>
+        <commonality>0.01</commonality>
+        <statmultiplier>2.0</statmultiplier>
+        <associatedStats>
+            <li>Beauty</li>
+            <li>BeautyOutdoors</li>
+        </associatedStats>
+    </PlantGenetics.TraitDef>
+    <PlantGenetics.TraitDef>
+        <defName>Productive</defName>
+        <label>productive</label>
+        <commonality>0.01</commonality>
+        <statmultiplier>1.5</statmultiplier>
+        <associatedPlantProperty>harvestYield</associatedPlantProperty>
+    </PlantGenetics.TraitDef>
+    <PlantGenetics.TraitDef>
+        <defName>Booming</defName>
+        <label>booming</label>
+        <commonality>0.01</commonality>
+        <statmultiplier>0.8</statmultiplier>
+        <associatedPlantProperty>growDays</associatedPlantProperty>
+    </PlantGenetics.TraitDef>
+    <PlantGenetics.TraitDef>
+        <defName>Flexible</defName>
+        <label>flexible</label>
+        <commonality>0.01</commonality>
+        <statmultiplier>0.5</statmultiplier>
+        <associatedPlantProperty>fertilityMin</associatedPlantProperty>
+    </PlantGenetics.TraitDef>
+    <PlantGenetics.TraitDef>
+        <defName>Resilient</defName>
+        <label>resilient</label>
+        <commonality>0.01</commonality>
+        <statmultiplier>0.5</statmultiplier>
+        <associatedPlantProperty>growMinGlow</associatedPlantProperty>
+    </PlantGenetics.TraitDef>
+    <PlantGenetics.TraitDef>
+        <defName>Winter</defName>
+        <label>winter</label>
+        <commonality>0.01</commonality>
+        <special>true</special>
+    </PlantGenetics.TraitDef>
+    <PlantGenetics.TraitDef>
+        <defName>Glowing</defName>
+        <label>glowing</label>
+        <commonality>0.01</commonality>
+        <statmultiplier>5.9</statmultiplier>
+        <associatedPlantProperty>glow</associatedPlantProperty>
+    </PlantGenetics.TraitDef>
+    <PlantGenetics.TraitDef>
+        <defName>Thriving</defName>
+        <label>thriving</label>
+        <commonality>0.01</commonality>
+        <statmultiplier>1.3</statmultiplier>
+        <associatedPlantProperty>fertilityMin</associatedPlantProperty>
+    </PlantGenetics.TraitDef>    
+</Defs>
+<!--
+
+        Beautiful = "Beautiful",
+        Chemical = "Chemical",
+        Easy = "Easy",
+        Growing = "Growing",
+        Hard = "Hard",
+        Immune = "Immune",
+        Darkness = "Darkness",
+        Pollux = "Pollux",
+        Thorny = "Thorny",
+        Yield = "Yield";
+-->

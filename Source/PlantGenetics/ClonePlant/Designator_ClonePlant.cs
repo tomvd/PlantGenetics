@@ -7,7 +7,7 @@ namespace PlantGenetics;
 
 public class Designator_ClonePlant : Designator
 {
-    public override int DraggableDimensions => 2;
+    public override DrawStyleCategoryDef DrawStyleCategory => DrawStyleCategoryDefOf.Plants;
 
     public Designator_ClonePlant()
     {
